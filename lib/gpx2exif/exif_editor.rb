@@ -8,16 +8,16 @@ module Gpx2exif
 
     def initialize
       @images = Array.new
-      @camera_time_offset = 0
+      @time_offset = 0
     end
 
     attr_reader :images
-    attr_accessor :camera_time_offset
+    attr_accessor :time_offset
 
     def read_file(path)
       i = {
         :path => path,
-        :time => get_photo_time(path) + @camera_time_offset
+        :time => get_photo_time(path) + @time_offset
       }
       @images << i
       puts "Added file #{path}, time #{i[:time]}"

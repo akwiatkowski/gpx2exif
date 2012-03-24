@@ -20,8 +20,13 @@ module Gpx2exif
 
     def match_up
       @ee.images.each do |i|
-        puts i
+        puts "* searching for #{i[:path]}, time #{i[:time]}"
+        i[:coord] = @gp.find_by_time(i[:time])
+        if i[:coord].nil?
+          puts " - not found"
+        end
       end
+
     end
 
 
