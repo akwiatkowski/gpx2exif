@@ -1,5 +1,6 @@
 = gpx2xif
 
+Tested only on Garmin GPX files.
 
 == Contributing to simple_metar_parser
  
