@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem 'nokogiri'
-gem 'active_support'
+gem 'mini_exiftool'
 
 group :development do
   gem "rspec", "~> 2.3.0"

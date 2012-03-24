@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'nokogiri'
-require 'active_support'
 
 $:.unshift(File.dirname(__FILE__))
 
