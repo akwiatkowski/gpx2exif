@@ -25,7 +25,7 @@ module Gpx2exif
           :lat => wpt.xpath('@lat').to_s.to_f,
           :lon => wpt.xpath('@lon').to_s.to_f,
           :time => proc_time(wpt.xpath('time').children.first.to_s, time_offset),
-          :ele => wpt.xpath('ele').children.first.to_s.to_f
+          :alt => wpt.xpath('ele').children.first.to_s.to_f
         }
         if not w[:lat].nil? and not w[:lat] == 0.0 and
           not w[:lon].nil? and not w[:lon] == 0.0 and

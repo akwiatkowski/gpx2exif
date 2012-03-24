@@ -29,6 +29,17 @@ module Gpx2exif
 
     end
 
+    # Save all coords
+    def save!
+      @ee.images.each do |i|
+        if not i[:coord].nil?
+          puts "! saving for #{i[:path]}"
+          @ee.set_photo_coords_internal(i)
+        end
+
+      end
+    end
+
 
   end
 end
