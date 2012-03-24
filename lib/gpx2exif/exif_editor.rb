@@ -42,8 +42,13 @@ module Gpx2exif
       photo['GPSLatitude'] = lat
       photo['GPSLongitude'] = lon
 
-      photo['GPSLatitudeRef'] = "N"
-      photo['GPSLongitudeRef'] = "E"
+      lat_ref = "N"
+      lon_ref = "E"
+      lat_ref = "S" if lat_ref < 0.0
+      lon_ref = "W" if lon_ref < 0.0
+
+      photo['GPSLatitudeRef'] = lat_ref
+      photo['GPSLongitudeRef'] = lon_ref
 
       photo['GPSAltitude'] = alt
       photo.save
