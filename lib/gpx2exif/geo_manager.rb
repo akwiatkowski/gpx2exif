@@ -10,7 +10,7 @@ module Gpx2exif
       @gp = GpxParser.new
     end
 
-    def add_all_files
+    def add_all_files(time_offset = 0)
       # add all GPX
       Dir.glob("**/*.GPX", File::FNM_CASEFOLD).each do |f|
         add_gpx_file(f)
@@ -18,10 +18,10 @@ module Gpx2exif
 
       # add all GPX
       Dir.glob("**/*.JPG", File::FNM_CASEFOLD).each do |f|
-        add_image(f)
+        add_image(f, time_offset)
       end
       Dir.glob("**/*.JPEG", File::FNM_CASEFOLD).each do |f|
-        add_image(f)
+        add_image(f, time_offset)
       end
     end
 
@@ -29,8 +29,8 @@ module Gpx2exif
       @gp.add_file(path)
     end
 
-    def add_image(path)
-      @ee.read_file(path)
+    def add_image(path, time_offset = 0)
+      @ee.read_file(path, time_offset)
     end
 
     def match_up

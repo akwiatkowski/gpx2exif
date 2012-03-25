@@ -6,9 +6,13 @@ require 'gpx2exif'
 puts "Are you sure? It is evil script which probably eat photos of your dog and family. Uppercase 'yes' and enter if you want to continue."
 str = gets
 
+puts "Do you want to add offset to image time? Default is 0 seconds."
+time_offset = gets
+time_offset = time_offset.to_i
+
 exit(0) unless str.strip == 'YES'
 
 g = Gpx2exif::GeoManager.new
-g.add_all_files
+g.add_all_files(time_offset)
 g.match_up
 g.save!
