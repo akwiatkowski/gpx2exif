@@ -5,7 +5,7 @@ describe Gpx2exif::ExifEditor do
     @path = File.join('spec', 'fixtures', 'IMGP4206.JPG')
   end
 
-  it "simple test" do
+  it "reading image" do
     e = Gpx2exif::ExifEditor.new
     e.read_file(@path)
   end

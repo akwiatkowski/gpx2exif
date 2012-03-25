@@ -10,6 +10,18 @@ module Gpx2exif
       @gp = GpxParser.new
     end
 
+    def add_all_files
+      # add all GPX
+      Dir.glob("**/*.GPX", File::FNM_CASEFOLD).each do |f|
+        add_gpx_file(f)
+      end
+
+      # add all GPX
+      Dir.glob("**/*.JPG", File::FNM_CASEFOLD).each do |f|
+        add_image(f)
+      end
+    end
+
     def add_gpx_file(path)
       @gp.add_file(path)
     end

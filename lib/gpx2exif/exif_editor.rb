@@ -44,8 +44,8 @@ module Gpx2exif
 
       lat_ref = "N"
       lon_ref = "E"
-      lat_ref = "S" if lat_ref < 0.0
-      lon_ref = "W" if lon_ref < 0.0
+      lat_ref = "S" if lat < 0.0
+      lon_ref = "W" if lon < 0.0
 
       photo['GPSLatitudeRef'] = lat_ref
       photo['GPSLongitudeRef'] = lon_ref
