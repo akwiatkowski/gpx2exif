@@ -55,6 +55,10 @@ module Gpx2exif
       end
     end
 
+    def simulate
+      to_process = @ee.images.select { |i| not i[:coord].nil? }
+      puts "Result: to update #{to_process.size} from #{@ee.images.size}"
+    end
 
   end
 end

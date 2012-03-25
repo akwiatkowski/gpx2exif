@@ -22,7 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "bobikx@poczta.fm"
   gem.authors = ["Aleksander Kwiatkowski"]
   # dependencies defined in Gemfile
-  gem.executables = 'geotag_all_images'
+  gem.executables = ['geotag_all_images', 'geotag_simulate']
 
   gem.files = FileList[
     "[A-Z]*", "{bin,generators,lib,test}/**/*"
