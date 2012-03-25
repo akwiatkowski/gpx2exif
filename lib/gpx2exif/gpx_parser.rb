@@ -41,7 +41,7 @@ module Gpx2exif
 
       a = a.sort { |b, c| b[:time] <=> c[:time] }
       time_substring = " from #{a.first[:time]} to #{a.last[:time]}, " if a.size > 0
-      puts "Imported #{a.size} coords,#{time_substring}#{error_count} errors"
+      puts "Imported #{a.size} coords,#{time_substring}#{error_count} errors from file #{path}"
       @coords += a
     end
 

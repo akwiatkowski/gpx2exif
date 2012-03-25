@@ -20,6 +20,9 @@ module Gpx2exif
       Dir.glob("**/*.JPG", File::FNM_CASEFOLD).each do |f|
         add_image(f)
       end
+      Dir.glob("**/*.JPEG", File::FNM_CASEFOLD).each do |f|
+        add_image(f)
+      end
     end
 
     def add_gpx_file(path)

@@ -1,6 +1,25 @@
 = gpx2xif
 
-Tested only on Garmin GPX files.
+Tested only on Garmin eTrex with their GPX files. Works with Flickr and Panoramio.
+
+== Disclaimer
+
+This gem add one executable which overwrite JPG files. BACKUP IS NEEDED!
+
+== How to use it?
+
+* gem install gpx2exif
+
+* go to path where you have JPG/JPEG photos (case insensitive) and GPX files
+
+* WARNING! it will overwrite all your photos so MAKE A BACKUP!
+
+* type 'geotag_all_images' and press enter key
+
+* see nice piece of output and you have geotagged photos now
+
+If something is not working send me e-mail and I'll fix it.
+
 
 == Contributing to simple_metar_parser
  
