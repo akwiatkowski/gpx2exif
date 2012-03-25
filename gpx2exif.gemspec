@@ -5,26 +5,27 @@
 
 Gem::Specification.new do |s|
   s.name = "gpx2exif"
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
   s.date = "2012-03-25"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
-  s.executables = ["geotag_all_images"]
+  s.executables = ["geotag_all_images", "geotag_simulate"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "bin/geotag_all_images",
+    "bin/geotag_simulate",
     "lib/gpx2exif.rb",
     "lib/gpx2exif/exif_editor.rb",
     "lib/gpx2exif/geo_manager.rb",
