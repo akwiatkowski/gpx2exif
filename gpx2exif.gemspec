@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-03-24"
+  s.date = "2012-03-25"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
   s.executables = ["geotag_all_images"]
