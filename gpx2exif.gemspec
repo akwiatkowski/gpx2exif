@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "bin/geotag_all_images.rb",
+    "bin/geotag_all_images",
     "lib/gpx2exif.rb",
     "lib/gpx2exif/exif_editor.rb",
     "lib/gpx2exif/geo_manager.rb",
