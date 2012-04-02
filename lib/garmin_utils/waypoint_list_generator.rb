@@ -13,7 +13,7 @@ module GarminUtils
     end
 
     def add_yaml_file(y)
-      
+      @pois += YAML::load_file(y)
     end
 
     def add(lat, lon, name, cmt = nil, time = nil, ele = nil, sym = nil)
@@ -29,7 +29,9 @@ module GarminUtils
     end
 
     def to_xml
-      xml = Builder::XmlMarkup.new(:indent => 2)
+      #xml = Builder::XmlMarkup.new(:indent => 2)
+      string = ""
+      xml = Builder::XmlMarkup.new(:target => string, :indent => 0)
       xml.instruct! :xml, :encoding => "UTF-8", :standalone => 'no'
       xml.gpx(
               'xmlns' => "http://www.topografix.com/GPX/1/1",
@@ -44,8 +46,9 @@ module GarminUtils
 
       ) do |g|
         g.metadata do |meta|
-          meta.link('href' => "http://www.garmin.com")
-          meta.text 'Garmin International'
+          meta.link('href' => "http://www.garmin.com") do |link|
+            link.text 'Garmin International'
+          end
           meta.time process_time(Time.now) # 2012-03-24T15:41:34Z
         end
 
@@ -56,7 +59,11 @@ module GarminUtils
             wp.ele poi[:elevation] unless poi[:elevation].nil?
             wp.ele poi[:ele] unless poi[:ele].nil?
 
-            wp.time process_time(poi[:time])
+            unless poi[:time].nil?
+              wp.time process_time(poi[:time])
+            else
+              wp.time process_time(Time.now)
+            end
             wp.name poi[:name]
 
             wp.cmt poi[:comment] unless poi[:comment].nil?
@@ -67,11 +74,34 @@ module GarminUtils
         end
       end
 
-      return xml.to_s
+      #return string
+      return string.gsub(/\n/, '').gsub(/\r/, '')
 
     end
 
     attr_reader :pois
+
+    def self.symbols
+      # http://freegeographytools.com/2008/garmin-gps-unit-waypoint-icons-table
+      [
+              "Flag, Blue",
+              "Flag, Green",
+              "Flag, Red",
+
+              "Pin, Blue",
+              "Pin, Green",
+              "Pin, Red",
+
+              "Block, Blue",
+              "Block, Green",
+              "Block, Red",
+
+              "Summit",
+              "Trail Head"
+              # ...
+
+      ]
+    end
 
     def process_time(time)
       time.utc.strftime('%Y-%m-%dT%H:%M:%SZ')

@@ -1,0 +1,42 @@
+--- 
+- :name: Lackowa (Beskid Niski)
+  :ele: 997
+  :cmt: Highest mountain in Beskid Niski
+  :lat: 49.428333
+  :lon: 21.096111
+  :sym: Summit
+
+- :name: Bieliczna (Beskid Niski)
+  :ele: 600
+  :cmt: Abandomed village
+  :lat: 49.44195
+  :lon: 21.09712
+  :sym: Trail Head
+
+- :name: Regetów (Beskid Niski)
+  :ele: 600
+  :cmt: Cemetary
+  :lat: 49.45268
+  :lon: 21.22367
+  :sym: Trail Head
+
+- :name: Radocyna (Beskid Niski)
+  :ele: 600
+  :cmt: Cemetary
+  :lat: 49.4666667
+  :lon: 21.3833333
+  :sym: Trail Head
+
+- :name: Ciechania (Beskid Niski)
+  :ele: 600
+  :cmt: Abandomed village
+  :lat: 49.45
+  :lon: 21.516111
+  :sym: Trail Head
+
+- :name: Jasiel (Beskid Niski)
+  :ele: 600
+  :cmt: Abandomed village
+  :lat: 49.367222
+  :lon: 21.909722
+  :sym: Trail Head
