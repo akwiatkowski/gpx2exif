@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'gpx2exif'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: generate_garmin_waypoints [options]"
+
+  opts.on("-y", "--yaml FILE", "Add points from yaml file") do |v|
+    options[:yaml] = v
+  end
+end.parse!
+
+g = GarminUtils::WaypointListGenerator.new
+if options[:yaml]
+ g.add_yaml_file(options[:yaml])
+end
+
+# result
+puts xml = g.to_xml

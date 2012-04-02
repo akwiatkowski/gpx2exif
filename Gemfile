@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gem 'nokogiri'
 gem 'mini_exiftool'
+gem 'builder'
 
 group :development do
   gem "rspec", "~> 2.3.0"

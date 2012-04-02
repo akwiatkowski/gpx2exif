@@ -14,7 +14,7 @@ module Gpx2exif
     attr_reader :images
     attr_accessor :global_time_offset
 
-    def read_file(path, time_offset)
+    def read_file(path, time_offset = 0)
       i = {
         :path => path,
         :time => get_photo_time(path) + time_offset + @global_time_offset
