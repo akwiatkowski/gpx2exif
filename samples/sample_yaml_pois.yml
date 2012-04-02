@@ -1,42 +1,204 @@
 --- 
-- :name: Lackowa (Beskid Niski)
+- :name: Lackowa
   :ele: 997
-  :cmt: Highest mountain in Beskid Niski
+  :cmt: Beskid Niski, Highest mountain in Beskid Niski in Poland
   :lat: 49.428333
   :lon: 21.096111
   :sym: Summit
+  # not used in gps, but for future use - diff. file for mountain range
+  :m_range: Beskid Niski
 
-- :name: Bieliczna (Beskid Niski)
+- :name: Bieliczna
   :ele: 600
-  :cmt: Abandomed village
+  :cmt: Beskid Niski, Abandomed village
   :lat: 49.44195
   :lon: 21.09712
   :sym: Trail Head
 
-- :name: Regetów (Beskid Niski)
+- :name: Regetów
   :ele: 600
-  :cmt: Cemetary
+  :cmt: Beskid Niski, Cemetary
   :lat: 49.45268
   :lon: 21.22367
   :sym: Trail Head
 
-- :name: Radocyna (Beskid Niski)
+- :name: Radocyna
   :ele: 600
-  :cmt: Cemetary
+  :cmt: Beskid Niski, Cemetary
   :lat: 49.4666667
   :lon: 21.3833333
   :sym: Trail Head
 
-- :name: Ciechania (Beskid Niski)
+- :name: Ciechania
   :ele: 600
-  :cmt: Abandomed village
+  :cmt: Beskid Niski, Abandomed village
   :lat: 49.45
   :lon: 21.516111
   :sym: Trail Head
 
-- :name: Jasiel (Beskid Niski)
+- :name: Wilsznia
   :ele: 600
-  :cmt: Abandomed village
+  :cmt: Beskid Niski, Abandomed village
+  :lat: 49.462776
+  :lon: 21.628771
+  :sym: Trail Head
+
+- :name: Smereczne
+  :ele: 600
+  :cmt: Beskid Niski, Abandomed village
+  :lat: 49.468577
+  :lon: 21.647826
+  :sym: Trail Head
+
+- :name: Jasiel
+  :ele: 600
+  :cmt: Beskid Niski, Abandomed village
   :lat: 49.367222
   :lon: 21.909722
   :sym: Trail Head
+
+- :name: Rosochatka
+  :ele: 753
+  :cmt: Beskid Niski, 238m up
+  :lat: 49.626667
+  :lon: 20.858056
+  :sym: Summit
+  :m_range: Beskid Niski
+
+#- :name: Jaworze
+#  :ele: 882
+#  :cmt: Beskid Niski
+#  :lat:
+#  :lon: 
+#  :sym: Summit
+#  :m_range: Beskid Niski
+
+- :name: Jaworzyna Konieczniańska
+  :ele: 881
+  :cmt: Beskid Niski, 271m up
+  :lat: 49.4475
+  :lon: 21.263889
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Grzywacka Góra
+  :ele: 567
+  :cmt: Beskid Niski
+  :lat: 49.571389
+  :lon: 21.538611
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Łysa Góra (Beskid Niski)
+  :ele: 641
+  :cmt: Beskid Niski
+  :lat: 49.564722
+  :lon: 21.551944
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Baranie
+  :ele: 754
+  :cmt: Beskid Niski, 211m up
+  :lat: 49.437222
+  :lon: 21.596389
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Przymiarki
+  :ele: 626
+  :cmt: Beskid Niski
+  :lat: 49.541111
+  :lon: 21.805833
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Busov
+  :ele: 1002
+  :cmt: Beskid Niski
+  :lat: 49.388611
+  :lon: 21.162778
+  :sym: Summit
+  :m_range: Beskid Niski
+
+#- :name: Kwiatoń
+#  :ele: 600
+#  :cmt: Beskid Niski
+#  :lat:
+#  :lon:
+#  :sym: Summit
+#  :m_range: Trail Head
+
+
+# Other
+- :name: Mużeń
+  :ele: 450
+  :cmt: Pogórze Rożnowskie
+  :lat: 49.633056
+  :lon: 20.737778
+  :sym: Summit
+  :m_range: Pogórze Rożnowskie
+
+- :name: Turbacz
+  :ele: 1310
+  :cmt: Gorce, 600m up
+  :lat: 49.542944
+  :lon: 20.111556
+  :sym: Summit
+  :m_range: Gorce
+
+- :name: Tobołów
+  :ele: 994
+  :cmt: Gorce
+  :lat: 49.575306
+  :lon: 20.067167
+  :sym: Summit
+  :m_range: Gorce
+
+- :name: Trzydniowiański Wierch
+  :ele: 1758
+  :cmt: Tatry
+  :lat: 49.219556
+  :lon: 19.803361
+  :sym: Summit
+  :m_range: Tatry
+
+- :name: Kończysty Wierch
+  :ele: 2002
+  :cmt: Tatry
+  :lat: 49.206139
+  :lon: 19.808472
+  :sym: Summit
+  :m_range: Tatry
+
+- :name: Sokolik
+  :ele: 642
+  :cmt: Rudawy Janowickie
+  :lat: 50.869717
+  :lon: 15.867928
+  :sym: Summit
+  :m_range: Rudawy Janowickie
+
+- :name: Skalnik (Rudawy Janowickie)
+  :ele: 945
+  :cmt: Rudawy Janowickie, 220m up
+  :lat: 50.809222
+  :lon: 15.901589
+  :sym: Summit
+  :m_range: Rudawy Janowickie
+
+- :name: Waligóra
+  :ele: 936
+  :cmt: Góry Suche, Góry Kamienne, 366m up
+  :lat: 50.683333
+  :lon: 16.283333
+  :sym: Summit
+  :m_range: Góry Kamienne
+
+- :name: Średniak (Góry Kamienne)
+  :ele: 782
+  :cmt: Góry Suche, Góry Kamienne
+  :lat: 50.671944
+  :lon: 16.235833
+  :sym: Summit
+  :m_range: Góry Kamienne
