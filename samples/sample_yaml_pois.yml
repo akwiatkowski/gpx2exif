@@ -59,7 +59,7 @@
 
 - :name: Rosochatka
   :ele: 753
-  :cmt: Beskid Niski, 238m up
+  :cmt: Beskid Niski, 238m prominence
   :lat: 49.626667
   :lon: 20.858056
   :sym: Summit
@@ -75,7 +75,7 @@
 
 - :name: Jaworzyna Konieczniańska
   :ele: 881
-  :cmt: Beskid Niski, 271m up
+  :cmt: Beskid Niski, 271m prominence
   :lat: 49.4475
   :lon: 21.263889
   :sym: Summit
@@ -99,7 +99,7 @@
 
 - :name: Baranie
   :ele: 754
-  :cmt: Beskid Niski, 211m up
+  :cmt: Beskid Niski, 211m prominence
   :lat: 49.437222
   :lon: 21.596389
   :sym: Summit
@@ -141,7 +141,7 @@
 
 - :name: Turbacz
   :ele: 1310
-  :cmt: Gorce, 600m up
+  :cmt: Gorce, 600m prominence
   :lat: 49.542944
   :lon: 20.111556
   :sym: Summit
@@ -181,7 +181,7 @@
 
 - :name: Skalnik (Rudawy Janowickie)
   :ele: 945
-  :cmt: Rudawy Janowickie, 220m up
+  :cmt: Rudawy Janowickie, 220m prominence
   :lat: 50.809222
   :lon: 15.901589
   :sym: Summit
@@ -189,7 +189,7 @@
 
 - :name: Waligóra
   :ele: 936
-  :cmt: Góry Suche, Góry Kamienne, 366m up
+  :cmt: Góry Suche, Góry Kamienne, 366m prominence
   :lat: 50.683333
   :lon: 16.283333
   :sym: Summit
@@ -202,3 +202,104 @@
   :lon: 16.235833
   :sym: Summit
   :m_range: Góry Kamienne
+
+# Beskid Śląski
+
+- :name: Ustroń Polana
+  :ele: 400
+  :cmt: Beskid Śląski
+  :lat: 49.696895
+  :lon: 18.82978
+  :sym: Trail Head
+  :m_range: Beskid Śląski
+
+- :name: Równica
+  :ele: 782
+  :cmt: Beskid Śląski, 249m prominence
+  :lat: 49.724681
+  :lon: 18.856508
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Orłowa
+  :ele: 813
+  :cmt: Beskid Śląski
+  :lat: 49.696944
+  :lon: 18.878333
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Trzy Kopce Wiślańskie
+  :ele: 810
+  :cmt: Beskid Śląski
+  :lat: 49.664278
+  :lon: 18.907278
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Czupel (882)
+  :ele: 882
+  :cmt: Beskid Śląski
+  :lat: 49.647028
+  :lon: 18.916472
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Wisła Głębce
+  :ele: 400
+  :cmt: Beskid Śląski
+  :lat: 49.621667
+  :lon: 18.875833
+  :sym: Trail Head
+  :m_range: Beskid Śląski
+
+# second day
+
+- :name: Wielka Czantoria
+  :ele: 995
+  :cmt: Beskid Śląski, 311m prominence
+  :lat: 49.678611
+  :lon: 18.804444
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Przełęcz Beskidek
+  :ele: 648
+  :cmt: Beskid Śląski
+  :lat: 49.656944
+  :lon: 18.806944
+  :sym: Trail Head
+  :m_range: Beskid Śląski
+
+- :name: Soszów Wielki
+  :ele: 886
+  :cmt: Beskid Śląski
+  :lat: 49.634389
+  :lon: 18.812972
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Cieślar
+  :ele: 920
+  :cmt: Beskid Śląski
+  :lat: 49.6245
+  :lon: 18.817139
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Stożek Wielki
+  :ele: 978
+  :cmt: Beskid Śląski
+  :lat: 49.605556
+  :lon: 18.823056
+  :sym: Summit
+  :m_range: Beskid Śląski
+
+- :name: Kiczory
+  :ele: 989
+  :cmt: Beskid Śląski, 225m prominence
+  :lat: 49.595361
+  :lon: 18.839417
+  :sym: Summit
+  :m_range: Beskid Śląski
+
