@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gpx2exif"
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-03-25"
+  s.date = "2012-04-07"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
   s.executables = ["geotag_all_images", "geotag_simulate"]
@@ -24,8 +24,11 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "bin/generate_garmin_waypoints",
     "bin/geotag_all_images",
     "bin/geotag_simulate",
+    "lib/garmin_utils.rb",
+    "lib/garmin_utils/waypoint_list_generator.rb",
     "lib/gpx2exif.rb",
     "lib/gpx2exif/exif_editor.rb",
     "lib/gpx2exif/geo_manager.rb",
@@ -43,6 +46,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
       s.add_runtime_dependency(%q<mini_exiftool>, [">= 0"])
+      s.add_runtime_dependency(%q<builder>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
@@ -50,6 +54,7 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<nokogiri>, [">= 0"])
       s.add_dependency(%q<mini_exiftool>, [">= 0"])
+      s.add_dependency(%q<builder>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
@@ -58,6 +63,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<nokogiri>, [">= 0"])
     s.add_dependency(%q<mini_exiftool>, [">= 0"])
+    s.add_dependency(%q<builder>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
