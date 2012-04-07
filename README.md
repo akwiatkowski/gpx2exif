@@ -4,7 +4,7 @@ gpx2xif
 Geotagging
 ----------
 
-Geotag your photos using stored GPX files. At this moment it support only Garmin eTrex devices.
+Geotag your photos using stored GPX files. At this moment it supports only Garmin eTrex devices.
 
 
 Disclaimer
@@ -47,7 +47,7 @@ How to use it
 
 3. Run command
 
-  generate_garmin_waypoints -y <YAML input file> > output.gpx
+  generate_garmin_waypoints -y input_file.yml > output.gpx
 
 
 
