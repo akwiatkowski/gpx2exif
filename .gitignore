@@ -48,4 +48,3 @@ pkg
 #*.rbc
 
 .idea
-spec/fixtures/*.*

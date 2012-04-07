@@ -1,6 +1,9 @@
 gpx2xif
 =======
 
+Geotagging
+----------
+
 Geotag your photos using stored GPX files. At this moment it support only Garmin eTrex devices.
 
 
@@ -9,8 +12,9 @@ Disclaimer
 
 This gem add one executable which overwrite JPG files. BACKUP IS NEEDED!
 
+
 How to use it
-------
+-------------
 
 1. gem install gpx2exif
 
@@ -26,6 +30,18 @@ How to use it
 
 
 If something is not working send me e-mail and I'll fix it.
+
+
+Create waypoint files
+---------------------
+
+How to use it
+-------------
+
+generate_garmin_waypoints -y <YAML input file>
+
+
+
 
 
 Contributing to gpx2xif

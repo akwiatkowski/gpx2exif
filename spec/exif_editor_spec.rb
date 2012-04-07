@@ -2,10 +2,10 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Gpx2exif::ExifEditor do
   before :each do
-    @path = File.join('spec', 'fixtures', 'IMGP4206.JPG')
+    @path = File.join('spec', 'fixtures', 'sample.JPG')
   end
 
-  it "reading image" do
+  it "should read image" do
     e = Gpx2exif::ExifEditor.new
     e.read_file(@path)
   end
