@@ -35,12 +35,19 @@ If something is not working send me e-mail and I'll fix it.
 Create waypoint files
 ---------------------
 
+You can prepare your own list of waypoints and then store into eTrex using GPX file. At this moment there is
+only possible to convert data from YAML file to GPX. It is also possible to integrate with other (web)apps.
+
 How to use it
 -------------
 
-generate_garmin_waypoints -y <YAML input file>
+1. Check samples/sample_yaml_pois.yml as a template.
 
+2. Modify it, add yours POIs.
 
+3. Run command
+
+  generate_garmin_waypoints -y <YAML input file> > output.gpx
 
 
 
