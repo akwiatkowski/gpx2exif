@@ -203,14 +203,28 @@
   :sym: Summit
   :m_range: Góry Kamienne
 
-# Beskid Śląski
+# 2012.04 - Beskid Śląski
 
-- :name: Ustroń Polana
+- :name: Poznań Główny PKP
+  :ele: 110
+  :cmt: PKP
+  :lat: 52.401694
+  :lon: 16.911583
+  :sym: Ground Transportation
+
+- :name: Katowice PKP
+  :ele: 200
+  :cmt: PKP
+  :lat: 50.258292
+  :lon: 19.016744
+  :sym: Ground Transportation
+
+- :name: Ustroń Polana PKP
   :ele: 400
-  :cmt: Beskid Śląski
+  :cmt: PKP, Beskid Śląski
   :lat: 49.696895
   :lon: 18.82978
-  :sym: Trail Head
+  :sym: Ground Transportation
   :m_range: Beskid Śląski
 
 - :name: Równica
@@ -245,12 +259,20 @@
   :sym: Summit
   :m_range: Beskid Śląski
 
-- :name: Wisła Głębce
+- :name: Wisła Głębce PKP
   :ele: 400
   :cmt: Beskid Śląski
   :lat: 49.621667
   :lon: 18.875833
-  :sym: Trail Head
+  :sym: Ground Transportation
+  :m_range: Beskid Śląski
+
+- :name: Wisła Uzdrowisko PKP
+  :ele: 400
+  :cmt: Beskid Śląski
+  :lat: 49.658611
+  :lon: 18.855278
+  :sym: Ground Transportation
   :m_range: Beskid Śląski
 
 # second day

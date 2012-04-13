@@ -97,7 +97,10 @@ module GarminUtils
               "Block, Red",
 
               "Summit",
-              "Trail Head"
+              "Trail Head", # other trail parts, not summits
+              "Lodging", # rooms
+
+              "Ground Transportation" # all public ground transportation
               # ...
 
       ]
