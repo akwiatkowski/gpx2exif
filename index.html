@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gpx2exif by akwiatkowski</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Gpx2exif</h1>
+        <p>Geotag your photos using GPX files</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/akwiatkowski/gpx2exif" class="button fork"><strong>Fork On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/akwiatkowski/gpx2exif/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/akwiatkowski/gpx2exif/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>gpx2xif</h1>
+
+<h2>Geotagging</h2>
+
+<p>Geotag your photos using stored GPX files. At this moment it supports only Garmin eTrex devices.</p>
+
+<h2>Disclaimer</h2>
+
+<p>This gem add one executable which overwrite JPG files. BACKUP IS NEEDED!</p>
+
+<h2>How to use it</h2>
+
+<ol>
+<li><p>gem install gpx2exif</p></li>
+<li><p>Go to path where you have JPG/JPEG photos (case insensitive) and GPX files.</p></li>
+<li><p>From 0.0.1 there is 'simulation command'. Type 'geotag_simulate' and enter.</p></li>
+<li><p>WARNING! it will overwrite all your photos so MAKE A BACKUP!</p></li>
+<li><p>Type 'geotag_all_images' and press enter key.</p></li>
+<li><p>See a nice piece of output and now you have geotagged photos :)</p></li>
+</ol><p>If something is not working send me e-mail and I'll fix it.</p>
+
+<h2>Create waypoint files</h2>
+
+<p>You can prepare your own list of waypoints and then store into eTrex using GPX file. At this moment there is
+only possible to convert data from YAML file to GPX. It is also possible to integrate with other (web)apps.</p>
+
+<h2>How to use it</h2>
+
+<ol>
+<li><p>Check samples/sample_yaml_pois.yml as a template.</p></li>
+<li><p>Modify it, add yours POIs.</p></li>
+<li>
+<p>Run command</p>
+
+<p>generate_garmin_waypoints -y input_file.yml &gt; output.gpx</p>
+</li>
+</ol><h2>Contributing to gpx2xif</h2>
+
+<p><a href="https://flattr.com/submit/auto?user_id=bobik314&amp;url=https://github.com/akwiatkowski/gpx2xif&amp;title=gpx2xif&amp;language=en_GB&amp;tags=github&amp;category=software"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this git repo"></a></p>
+
+<ul>
+<li>Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet</li>
+<li>Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it</li>
+<li>Fork the project</li>
+<li>Start a feature/bugfix branch</li>
+<li>Commit and push until you are happy with your contribution</li>
+<li>Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.</li>
+<li>Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.</li>
+</ul><h2>Copyright</h2>
+
+<p>Copyright (c) 2012 Aleksander Kwiatkowski. See LICENSE.txt for
+further details.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/akwiatkowski">akwiatkowski</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
