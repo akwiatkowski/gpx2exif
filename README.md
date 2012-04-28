@@ -1,4 +1,4 @@
-gpx2xif
+gpx2exif
 =======
 
 Geotagging
@@ -48,6 +48,18 @@ How to use it
 3. Run command
 
   generate_garmin_waypoints -y input_file.yml > output.gpx
+
+4. You can check inter-POI distances using
+
+  generate_garmin_waypoints -y input_file.yml -C
+
+   Distance conflict does not mean something is wrong. POIs can be close to each other so it
+   is a good idea to have your brain turned on ;)
+
+5. You can change inter-POI distances using 'latlon something' distance for distance checking
+   explained line before.
+
+  generate_garmin_waypoints -y samples/sample_yaml_pois.yml -C -t 1
 
 
 

@@ -1,4 +1,5 @@
 --- 
+# Beskid niski
 - :name: Lackowa
   :ele: 997
   :cmt: Beskid Niski, Highest mountain in Beskid Niski in Poland
@@ -121,6 +122,158 @@
   :sym: Summit
   :m_range: Beskid Niski
 
+- :name: Czarny Dział
+  :ele: 706
+  :cmt: Beskid Niski
+  :lat: 49.442034
+  :lon: 21.200165
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Wysota
+  :ele: 784
+  :cmt: Beskid Niski
+  :lat: 49.429085
+  :lon: 21.208062
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Rotunda (Beskid Niski)
+  :ele: 771
+  :cmt: Beskid Niski, Cementary 51
+  :lat: 49.4725
+  :lon: 21.233889
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Ropki
+  :ele: 500
+  :cmt: Beskid Niski, Village
+  :lat: 49.466667
+  :lon: 21.133333
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Ostry Wierch (Beskid Niski)
+  :ele: 938
+  :cmt: Beskid Niski, 175m prominence
+  :lat: 49.439167
+  :lon: 21.123056
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Przełęcz Beskid (Beskid Niski)
+  :ele: 800
+  :cmt: Beskid Niski
+  :lat: 49.425825
+  :lon: 21.075525
+  :sym: Trail Head
+  :m_range: Beskid Niski
+
+- :name: Izby
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.441566
+  :lon: 21.064196
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Łosie
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.569919
+  :lon: 21.086385
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Uście Gorlickie
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.521357
+  :lon: 21.1396
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Hańczowa
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.475201
+  :lon: 21.162432
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Wysowa Zdrój
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.441616
+  :lon: 21.173247
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Kozie Żebro
+  :ele: 847
+  :cmt: Beskid Niski
+  :lat: 49.4625
+  :lon: 21.203611
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Przełęcz Regetowska
+  :ele: 646
+  :cmt: Beskid Niski
+  :lat: 49.439444
+  :lon: 21.248056
+  :sym: Trail Head
+  :m_range: Beskid Niski
+
+- :name: Obycz
+  :ele: 788
+  :cmt: Beskid Niski
+  :lat: 49.434645
+  :lon: 21.240635
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Regietów
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.479444
+  :lon: 21.216667
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Regetów Wyżny (Cementary)
+  :ele: 500
+  :cmt: Beskid Niski, Cementary
+  :lat: 49.451928
+  :lon: 21.224319
+  :sym: Trail Head
+  :m_range: Beskid Niski
+
+- :name: Bordiów Wierch
+  :ele: 752
+  :cmt: Beskid Niski
+  :lat: 49.494717
+  :lon: 21.110418
+  :sym: Summit
+  :m_range: Beskid Niski
+
+- :name: Smerekowiec
+  :ele: 500
+  :cmt: Beskid Niski
+  :lat: 49.516667
+  :lon: 21.233333
+  :sym: Residence
+  :m_range: Beskid Niski
+
+- :name: Magura Małastowska
+  :ele: 813
+  :cmt: Beskid Niski, 228m prominence
+  :lat: 49.556111
+  :lon: 21.221667
+  :sym: Summit
+  :m_range: Beskid Niski
+
 #- :name: Kwiatoń
 #  :ele: 600
 #  :cmt: Beskid Niski
@@ -228,7 +381,7 @@
   :m_range: Beskid Śląski
 
 - :name: Równica
-  :ele: 782
+  :ele: 885
   :cmt: Beskid Śląski, 249m prominence
   :lat: 49.724681
   :lon: 18.856508

@@ -10,7 +10,11 @@ module GarminUtils
     def initialize
       @pois = Array.new
       @etrex_model = "eTrex 30"
+      @check_min_threshold = 0.01
     end
+
+    attr_accessor :check_min_threshold
+    attr_accessor :etrex_model
 
     def add_yaml_file(y)
       @pois += YAML::load_file(y)
@@ -18,14 +22,29 @@ module GarminUtils
 
     def add(lat, lon, name, cmt = nil, time = nil, ele = nil, sym = nil)
       @pois << {
-              :lat => lat,
-              :lon => lon,
-              :name => name,
-              :cmt => cmt,
-              :time => time,
-              :ele => ele,
-              :sym => sym
+        :lat => lat,
+        :lon => lon,
+        :name => name,
+        :cmt => cmt,
+        :time => time,
+        :ele => ele,
+        :sym => sym
       }
+    end
+
+    def check
+      puts "Distance conflicts:"
+
+      sorted = @pois.sort { |p, q| p[:lat] <=> q[:lat] }
+      (1...sorted.size).each do |i|
+        l = (sorted[i-1][:lat] - sorted[i][:lat]) ** 2 +
+          (sorted[i-1][:lon] - sorted[i][:lon]) ** 2
+        l = Math.sqrt(l)
+
+        if l < @check_min_threshold
+          puts "* #{sorted[i-1][:name]} - #{sorted[i][:name]} = #{l}"
+        end
+      end
     end
 
     def to_xml
@@ -34,14 +53,14 @@ module GarminUtils
       xml = Builder::XmlMarkup.new(:target => string, :indent => 0)
       xml.instruct! :xml, :encoding => "UTF-8", :standalone => 'no'
       xml.gpx(
-              'xmlns' => "http://www.topografix.com/GPX/1/1",
-              'xmlns:gpxx' => "http://www.garmin.com/xmlschemas/GpxExtensions/v3",
-              'xmlns:wptx1' => "http://www.garmin.com/xmlschemas/WaypointExtension/v1",
-              'xmlns:gpxtpx' => "http://www.garmin.com/xmlschemas/TrackPointExtension/v1",
-              'creator' => @etrex_model,
-              'version' => "1.1",
-              'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-              'xsi:schemaLocation' => "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"
+        'xmlns' => "http://www.topografix.com/GPX/1/1",
+        'xmlns:gpxx' => "http://www.garmin.com/xmlschemas/GpxExtensions/v3",
+        'xmlns:wptx1' => "http://www.garmin.com/xmlschemas/WaypointExtension/v1",
+        'xmlns:gpxtpx' => "http://www.garmin.com/xmlschemas/TrackPointExtension/v1",
+        'creator' => @etrex_model,
+        'version' => "1.1",
+        'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
+        'xsi:schemaLocation' => "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"
 
 
       ) do |g|
@@ -84,24 +103,24 @@ module GarminUtils
     def self.symbols
       # http://freegeographytools.com/2008/garmin-gps-unit-waypoint-icons-table
       [
-              "Flag, Blue",
-              "Flag, Green",
-              "Flag, Red",
+        "Flag, Blue",
+        "Flag, Green",
+        "Flag, Red",
 
-              "Pin, Blue",
-              "Pin, Green",
-              "Pin, Red",
+        "Pin, Blue",
+        "Pin, Green",
+        "Pin, Red",
 
-              "Block, Blue",
-              "Block, Green",
-              "Block, Red",
+        "Block, Blue",
+        "Block, Green",
+        "Block, Red",
 
-              "Summit",
-              "Trail Head", # other trail parts, not summits
-              "Lodging", # rooms
+        "Summit",
+        "Trail Head", # other trail parts, not summits
+        "Lodging", # rooms
 
-              "Ground Transportation" # all public ground transportation
-              # ...
+        "Ground Transportation" # all public ground transportation
+      # ...
 
       ]
     end

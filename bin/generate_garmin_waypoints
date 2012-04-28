@@ -4,19 +4,32 @@ require 'rubygems'
 require 'gpx2exif'
 require 'optparse'
 
-options = {}
+options = { }
 OptionParser.new do |opts|
   opts.banner = "Usage: generate_garmin_waypoints [options]"
 
   opts.on("-y", "--yaml FILE", "Add points from yaml file") do |v|
     options[:yaml] = v
   end
+  opts.on("-C", "--check", "Check distance of waypoints") do
+    options[:check] = true
+  end
+  opts.on("-t", "--check_threshold DISTANCE", "Min distance of waypoints") do |v|
+    options[:check_threshold] = v
+  end
 end.parse!
 
 g = GarminUtils::WaypointListGenerator.new
 if options[:yaml]
- g.add_yaml_file(options[:yaml])
+  g.add_yaml_file(options[:yaml])
+end
+if options[:check_threshold]
+  g.check_min_threshold = options[:check_threshold].to_f
 end
 
 # result
-puts xml = g.to_xml
+if options[:check]
+  g.check
+else
+  puts xml = g.to_xml
+end
