@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gpx2exif"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-04-07"
+  s.date = "2012-04-28"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
   s.executables = ["geotag_all_images", "geotag_simulate"]
