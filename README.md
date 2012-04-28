@@ -61,7 +61,9 @@ How to use it
 
   generate_garmin_waypoints -y samples/sample_yaml_pois.yml -C -t 1
 
+6. You can specify output file if you don't like using >> 'file.gpx'.
 
+  generate_garmin_waypoints -y samples/sample_yaml_pois.yml -o file.gpx
 
 Contributing to gpx2xif
 -------------------------------

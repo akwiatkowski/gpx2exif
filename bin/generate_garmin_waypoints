@@ -17,6 +17,9 @@ OptionParser.new do |opts|
   opts.on("-t", "--check_threshold DISTANCE", "Min distance of waypoints") do |v|
     options[:check_threshold] = v
   end
+  opts.on("-o", "--output FILE", "Save output to file") do |v|
+    options[:output_file] = v
+  end
 end.parse!
 
 g = GarminUtils::WaypointListGenerator.new
@@ -31,5 +34,13 @@ end
 if options[:check]
   g.check
 else
-  puts xml = g.to_xml
+  xml = g.to_xml
+  if options[:output_file]
+    f = File.open(options[:output_file], 'w')
+    f.puts xml
+    f.close
+  else
+    puts xml
+  end
+
 end
