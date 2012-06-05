@@ -1,5 +1,6 @@
 require 'rubygems'
-require 'mini_exiftool'
+#require 'mini_exiftool'
+require 'mini_exiftool/mini_exiftool'
 
 $:.unshift(File.dirname(__FILE__))
 
