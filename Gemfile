@@ -1,8 +1,7 @@
 source "http://rubygems.org"
 
 gem 'nokogiri'
-# just for a while
-#gem 'mini_exiftool', git: 'git://github.com/akwiatkowski/mini_exiftool.git'
+gem 'mini_exiftool'
 gem 'builder'
 
 group :development do

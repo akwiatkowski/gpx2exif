@@ -1,6 +1,9 @@
 require 'rubygems'
-#require 'mini_exiftool'
-require 'mini_exiftool/mini_exiftool'
+begin
+  require 'mini_exiftool'
+rescue MiniExiftool::Error
+  puts "Exiftool not available"
+end
 
 $:.unshift(File.dirname(__FILE__))
 
