@@ -1,8 +1,8 @@
 require 'rubygems'
 begin
   require 'mini_exiftool'
-rescue MiniExiftool::Error
-  puts "Exiftool not available"
+rescue
+  puts "Exiftool probably not available"
   unless defined? MiniExiftool
     class MiniExiftool
       def initialize(*args)
