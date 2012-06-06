@@ -3,6 +3,13 @@ begin
   require 'mini_exiftool'
 rescue MiniExiftool::Error
   puts "Exiftool not available"
+  unless defined? MiniExiftool
+    class MiniExiftool
+      def initialize(*args)
+        # nothing
+      end
+    end
+  end
 end
 
 $:.unshift(File.dirname(__FILE__))
