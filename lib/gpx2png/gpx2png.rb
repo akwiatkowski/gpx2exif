@@ -10,11 +10,14 @@ module Gpx2png
 
     def initialize
       @coords = Array.new
+      @zoom = 8
     end
 
     def add(lat, lon)
       @coords << { lat: lat, lon: lon }
     end
+
+    attr_accessor :zoom
 
     def dev
       zoom = 15
@@ -59,7 +62,7 @@ module Gpx2png
       return [lat_deg, lon_deg]
     end
 
-    # return image
+    # return where you should put point on tile
     def self.point_on_image(zoom, geo_coord)
       osm_tile_coord = convert(zoom, geo_coord)
       top_left_corner = reverse_convert(zoom, osm_tile_coord)
@@ -80,10 +83,46 @@ module Gpx2png
       # offset
       y_offset = y_geo - top_left_corner[0]
       # scale
-      y_distance = (bottom_right_corner[1] - top_left_corner[0])
+      y_distance = (bottom_right_corner[0] - top_left_corner[0])
       y = (TILE_HEIGHT.to_f * (y_offset / y_distance)).round
 
       return { osm_title_coord: osm_tile_coord, pixel_offset: [x, y] }
+    end
+
+
+    attr_reader :lat_min, :lat_max, :lon_min, :lon_max
+    attr_reader :tile_x_distance, :tile_y_distance
+
+    def download_and_join_tiles
+      @lat_min = @coords.collect { |c| c[:lat] }.min
+      @lat_max = @coords.collect { |c| c[:lat] }.max
+      @lon_min = @coords.collect { |c| c[:lon] }.min
+      @lon_max = @coords.collect { |c| c[:lon] }.max
+
+      @border_tiles = [
+        self.class.convert(@zoom, [@lat_min, @lon_min]),
+        self.class.convert(@zoom, [@lat_max, @lon_max])
+      ]
+
+      @tile_x_range = (@border_tiles[0][0])..(@border_tiles[1][0])
+      @tile_y_range = (@border_tiles[1][1])..(@border_tiles[0][1])
+
+      @tile_x_range.each do |x|
+        @tile_y_range.each do |y|
+          puts "#{x} #{y}"
+        end
+      end
+
+      #@tile_x_distance = @border_tiles[0][0] - @border_tiles[0][1]
+      #@tile_y_distance = @border_tiles[1][0] - @border_tiles[1][1]
+      #@bitmap_x_dista =
+
+      #puts @top_left_tile.inspect, @bottom_right_tile.inspect, @tile_x_distance, @tile_y_distance
+
+    end
+
+    def expand_map
+      # TODO expand min and max ranges
     end
 
 
