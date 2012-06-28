@@ -15,7 +15,7 @@ module Gpx2png
     def initialize
       @coords = Array.new
       @zoom = 8
-      @color = ChunkyPNG::Color::rgba(256, 0, 0, 128)
+      @color = ChunkyPNG::Color.from_hex('#FF0000')
     end
 
     def add(lat, lon)
@@ -169,12 +169,21 @@ module Gpx2png
 
         point_from = self.class.point_on_image(@zoom, [lat_from, lon_from])
         point_to = self.class.point_on_image(@zoom, [lat_to, lon_to])
+        # { osm_title_coord: osm_tile_coord, pixel_offset: [x, y] }
 
         # first point
-        
+        bitmap_xa = (point_from[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + point_from[:pixel_offset][0]
+        bitmap_ya = (point_from[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_from[:pixel_offset][1]
+        bitmap_xb = (point_to[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + point_to[:pixel_offset][0]
+        bitmap_yb = (point_to[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_to[:pixel_offset][1]
+
+        @full_image.line(
+          bitmap_xa, bitmap_ya,
+          bitmap_xb, bitmap_yb,
+          @color
+        )
 
       end
-      #@image.line(x, 0, x, height, ChunkyPNG::Color.from_hex(_options[:color]))
 
       @full_image.save('sample.png')
 
