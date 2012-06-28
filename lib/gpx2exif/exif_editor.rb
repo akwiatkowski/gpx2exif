@@ -18,7 +18,7 @@ end
 
 $:.unshift(File.dirname(__FILE__))
 
-module Gpx2exi
+module Gpx2exif
   class ExifEditor
 
     def initialize
