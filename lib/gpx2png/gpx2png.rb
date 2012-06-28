@@ -14,7 +14,7 @@ module Gpx2png
 
     def initialize
       @coords = Array.new
-      @zoom = 10
+      @zoom = 9
       @color = ChunkyPNG::Color.from_hex('#FF0000')
     end
 
@@ -148,8 +148,8 @@ module Gpx2png
           }
 
           # compose image
-          x_offset = (@tile_x_range.min - x) * TILE_WIDTH
-          y_offset = (@tile_y_range.min - y) * TILE_HEIGHT
+          x_offset = (x - @tile_x_range.min) * TILE_WIDTH
+          y_offset = (y - @tile_y_range.min) * TILE_HEIGHT
           puts x_offset, y_offset
           @full_image.compose!(
             image,
