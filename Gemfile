@@ -3,6 +3,7 @@ source "http://rubygems.org"
 gem 'nokogiri'
 gem 'mini_exiftool'
 gem 'builder'
+gem 'chunky_png'
 
 group :development do
   gem "rspec", "~> 2.3.0"

@@ -1,4 +1,8 @@
 require 'rubygems'
+require 'chunky_png'
+require 'net/http'
+require "uri"
+
 
 $:.unshift(File.dirname(__FILE__))
 
@@ -11,13 +15,14 @@ module Gpx2png
     def initialize
       @coords = Array.new
       @zoom = 8
+      @color = ChunkyPNG::Color::rgba(256, 0, 0, 128)
     end
 
     def add(lat, lon)
       @coords << { lat: lat, lon: lon }
     end
 
-    attr_accessor :zoom
+    attr_accessor :zoom, :color
 
     def dev
       zoom = 15
@@ -47,8 +52,13 @@ module Gpx2png
       return [x, y]
     end
 
-    def self.url(zoom, coord, server = 'b.')
+    def self.url_convert(zoom, coord, server = 'b.')
       x, y = convert(zoom, coord)
+      url(zoom, [x, y], server)
+    end
+
+    def self.url(zoom, coord, server = 'b.')
+      x, y = coord
       url = "http://#{server}tile.openstreetmap.org\/#{zoom}\/#{x}\/#{y}.png"
       return url
     end
@@ -107,17 +117,60 @@ module Gpx2png
       @tile_x_range = (@border_tiles[0][0])..(@border_tiles[1][0])
       @tile_y_range = (@border_tiles[1][1])..(@border_tiles[0][1])
 
+      # new image
+      @full_image_x = (1 + @tile_x_range.max - @tile_x_range.min) * TILE_WIDTH
+      @full_image_y = (1 + @tile_y_range.max - @tile_y_range.min) * TILE_HEIGHT
+      puts @full_image_x, @full_image_y
+      @full_image = ChunkyPNG::Image.new(
+        @full_image_x,
+        @full_image_y,
+        ChunkyPNG::Color::WHITE
+      )
+
+      # {:x, :y, :blob}
+      @images = Array.new
+
       @tile_x_range.each do |x|
         @tile_y_range.each do |y|
+          url = self.class.url(@zoom, [x,y])
+
+          # blob time
+          uri = URI.parse(url)
+          response = Net::HTTP.get_response(uri)
+          blob = response.body
+          image = ChunkyPNG::Image.from_blob(blob)
+
+          @images << {
+            url: url,
+            image: image,
+            x: x,
+            y: y
+          }
+
+          # compose image
+          x_offset = (@tile_x_range.min - x) * TILE_WIDTH
+          y_offset = (@tile_y_range.min - y) * TILE_HEIGHT
+          puts x_offset, y_offset
+          @full_image.compose!(image, x_offset, y_offset)
+          
           puts "#{x} #{y}"
         end
       end
 
-      #@tile_x_distance = @border_tiles[0][0] - @border_tiles[0][1]
-      #@tile_y_distance = @border_tiles[1][0] - @border_tiles[1][1]
-      #@bitmap_x_dista =
+      # sweet, image is joined
 
-      #puts @top_left_tile.inspect, @bottom_right_tile.inspect, @tile_x_distance, @tile_y_distance
+      # add some coords to the map
+      (1...@coords.size).each do |i|
+        lat_from = @coords[i-1][:lat]
+        lon_from = @coords[i-1][:lon]
+
+        lat_from = @coords[i-1][:lat]
+        lon_from = @coords[i-1][:lon]
+      end
+      #@image.line(x, 0, x, height, ChunkyPNG::Color.from_hex(_options[:color]))
+
+      @full_image.save('sample.png')
+
 
     end
 
