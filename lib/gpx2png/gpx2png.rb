@@ -164,8 +164,15 @@ module Gpx2png
         lat_from = @coords[i-1][:lat]
         lon_from = @coords[i-1][:lon]
 
-        lat_from = @coords[i-1][:lat]
-        lon_from = @coords[i-1][:lon]
+        lat_to = @coords[i][:lat]
+        lon_to = @coords[i][:lon]
+
+        point_from = self.class.point_on_image(@zoom, [lat_from, lon_from])
+        point_to = self.class.point_on_image(@zoom, [lat_to, lon_to])
+
+        # first point
+        
+
       end
       #@image.line(x, 0, x, height, ChunkyPNG::Color.from_hex(_options[:color]))
 
