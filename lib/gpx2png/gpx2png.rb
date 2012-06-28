@@ -22,7 +22,7 @@ module Gpx2png
       @coords << { lat: lat, lon: lon }
     end
 
-    attr_accessor :zoom, :color
+    attr_accessor :zoom, :color, :coords
 
     def dev
       zoom = 15
@@ -38,8 +38,10 @@ module Gpx2png
       }
     end
 
-    def to_png
-      nil
+    def to_png(filename)
+      download_and_join_tiles
+      @full_image.save(filename)
+      filename
     end
 
     # http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#X_and_Y
@@ -120,7 +122,7 @@ module Gpx2png
       # new image
       @full_image_x = (1 + @tile_x_range.max - @tile_x_range.min) * TILE_WIDTH
       @full_image_y = (1 + @tile_y_range.max - @tile_y_range.min) * TILE_HEIGHT
-      puts @full_image_x, @full_image_y
+      puts "Output image dimension #{@full_image_x}x#{@full_image_y}"
       @full_image = ChunkyPNG::Image.new(
         @full_image_x,
         @full_image_y,
@@ -150,14 +152,13 @@ module Gpx2png
           # compose image
           x_offset = (x - @tile_x_range.min) * TILE_WIDTH
           y_offset = (y - @tile_y_range.min) * TILE_HEIGHT
-          puts x_offset, y_offset
           @full_image.compose!(
             image,
             x_offset,
             y_offset
           )
           
-          puts "#{x} #{y}"
+          puts "processed #{x - @tile_x_range.min}x#{y - @tile_y_range.min} (max #{@tile_x_range.max - @tile_x_range.min}x#{@tile_y_range.max - @tile_y_range.min})"
         end
       end
 
@@ -188,10 +189,6 @@ module Gpx2png
         )
 
       end
-
-      @full_image.save('sample.png')
-
-
     end
 
     def expand_map

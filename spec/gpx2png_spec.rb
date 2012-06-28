@@ -7,12 +7,16 @@ describe Gpx2png::Gpx2png do
     e.add(51.0, 20.0)
     e.add(51.0, 21.0)
     e.add(50.0, 21.0)
-    e.to_png
+    e.to_png('samples/png_sample1.png')
+  end
 
-    #puts e.dev.to_yaml
+  it "should create using GPX file" do
+    g = Gpx2exif::GpxParser.new
+    g.add_file(File.join('spec', 'fixtures', 'sample.gpx'))
 
-    e.download_and_join_tiles
-
-    puts e.lat_min, e.lat_max, e.lon_min, e.lon_max
+    e = Gpx2png::Gpx2png.new
+    e.coords = g.coords
+    e.zoom = 15
+    e.to_png('samples/png_sample2.png')
   end
 end

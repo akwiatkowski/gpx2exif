@@ -12,6 +12,8 @@ module Gpx2exif
       @coords = Array.new
     end
 
+    attr_reader :coords
+
     def add_file(path, time_offset = 0)
       f = File.new(path)
       doc = Nokogiri::XML(f)
