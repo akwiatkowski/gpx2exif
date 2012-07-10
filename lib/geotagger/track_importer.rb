@@ -4,58 +4,15 @@ require 'nokogiri'
 $:.unshift(File.dirname(__FILE__))
 
 # Simple parsing GPX file
-module GpxUtils
-  class TrackImporter
+module Geotagger
+  class TrackImporter < GpxUtils::TrackImporter
 
     THRESHOLD = 5*60
 
-    def initialize
-      @coords = Array.new
-    end
-
-    attr_reader :coords
-
-    def add_file(path, time_offset = 0)
-      f = File.new(path)
-      doc = Nokogiri::XML(f)
-      doc.remove_namespaces!
-      a = Array.new
-      error_count = 0
-
-      trackpoints = doc.xpath('//gpx/trk/trkseg/trkpt')
-      trackpoints.each do |wpt|
-        w = {
-          :lat => wpt.xpath('@lat').to_s.to_f,
-          :lon => wpt.xpath('@lon').to_s.to_f,
-          :time => proc_time(wpt.xpath('time').children.first.to_s, time_offset),
-          :alt => wpt.xpath('ele').children.first.to_s.to_f
-        }
-        if not w[:lat].nil? and not w[:lat] == 0.0 and
-          not w[:lon].nil? and not w[:lon] == 0.0 and
-          not w[:time].nil?
-          a << w
-        else
-          error_count += 1
-        end
-
-      end
-
-      f.close
-
-      a = a.sort { |b, c| b[:time] <=> c[:time] }
-      time_substring = " from #{a.first[:time]} to #{a.last[:time]}, " if a.size > 0
-      puts "Imported #{a.size} coords,#{time_substring}#{error_count} errors from file #{path}"
-      @coords += a
-    end
-
-    def self.proc_time(ts, time_offset = 0)
-      if ts =~ /(\d{4})-(\d{2})-(\d{2})T(\d{1,2}):(\d{2}):(\d{2})Z/
-        return Time.gm($1.to_i, $2.to_i, $3.to_i, $4.to_i, $5.to_i, $6.to_i).localtime + time_offset
-      end
-    end
-
-    def proc_time(ts, time_offset)
-      self.class.proc_time(ts, time_offset)
+    # Only import valid coords
+    def self.coord_valid?(lat, lon, elevation, time)
+      return true if lat and lon and time
+      return false
     end
 
     def find_by_time(time)

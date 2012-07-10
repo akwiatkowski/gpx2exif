@@ -22,7 +22,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-g = GarminUtils::WaypointListGenerator.new
+g = GpxUtils::WaypointListGenerator.new
 if options[:yaml]
   g.add_yaml_file(options[:yaml])
 end

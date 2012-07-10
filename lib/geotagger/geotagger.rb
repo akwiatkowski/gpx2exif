@@ -1,13 +1,17 @@
 require 'rubygems'
+require 'gpx_utils'
+require 'geotagger/exif_editor'
+require 'geotagger/track_importer'
 
 $:.unshift(File.dirname(__FILE__))
 
-module Gpx2exif
-  class GeoManager
+module Geotagger
+  class Geotagger
 
     def initialize
       @ee = ExifEditor.new
-      @gp = GpxParser.new
+      #@ti = Geotagger::TrackImporter.new
+      @ti = TrackImporter.new
     end
 
     def add_all_files(time_offset = 0)
@@ -26,7 +30,7 @@ module Gpx2exif
     end
 
     def add_gpx_file(path)
-      @gp.add_file(path)
+      @ti.add_file(path)
     end
 
     def add_image(path, time_offset = 0)
@@ -36,7 +40,7 @@ module Gpx2exif
     def match_up
       @ee.images.each do |i|
         puts "* searching for #{i[:path]}, time #{i[:time]}"
-        i[:coord] = @gp.find_by_time(i[:time])
+        i[:coord] = @ti.find_by_time(i[:time])
         if i[:coord].nil?
           puts " - not found"
         end

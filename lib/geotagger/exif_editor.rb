@@ -3,7 +3,7 @@ require 'mini_exiftool'
 
 $:.unshift(File.dirname(__FILE__))
 
-module Gpx2exif
+module Geotagger
   class ExifEditor
 
     def initialize
