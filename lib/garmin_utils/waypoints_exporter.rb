@@ -5,7 +5,7 @@ require 'yaml'
 $:.unshift(File.dirname(__FILE__))
 
 module GarminUtils
-  class WaypointListGenerator
+  class WaypointsExporter
 
     def initialize
       @pois = Array.new

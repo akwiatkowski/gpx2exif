@@ -1,8 +1,9 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+#require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
-describe GarminUtils::GpxWaypointParser do
+describe GarminUtils::WaypointsImporter do
   it "should parse garmin etrex gpx file and get all waypoints" do
-    g = GarminUtils::GpxWaypointParser.new
+    g = GarminUtils::WaypointsImporter.new
     g.add_file(File.join('spec', 'fixtures', 'sample_waypoint.gpx'))
     pois = g.pois
 

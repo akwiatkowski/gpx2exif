@@ -3,7 +3,7 @@ require 'rubygems'
 $:.unshift(File.dirname(__FILE__))
 
 module GarminUtils
-  class GpxWaypointParser
+  class WaypointsImporter
 
     def initialize
       @pois = Array.new
