@@ -3,8 +3,9 @@ require 'nokogiri'
 
 $:.unshift(File.dirname(__FILE__))
 
-module Gpx2exif
-  class GpxParser
+# Simple parsing GPX file
+module GpxUtils
+  class TrackImporter
 
     THRESHOLD = 5*60
 

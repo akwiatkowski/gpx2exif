@@ -2,7 +2,7 @@ require 'rubygems'
 
 $:.unshift(File.dirname(__FILE__))
 
-module GarminUtils
+module GpxUtils
   class WaypointsImporter
 
     def initialize
@@ -26,7 +26,7 @@ module GarminUtils
         w = {
           :lat => wpt.xpath('@lat').to_s.to_f,
           :lon => wpt.xpath('@lon').to_s.to_f,
-          :time => Gpx2exif::GpxParser.proc_time(wpt.xpath('time').children.first.to_s),
+          :time => GpxUtils::TrackImporter.proc_time(wpt.xpath('time').children.first.to_s),
           :alt => wpt.xpath('ele').children.first.to_s.to_f,
           :name => wpt.xpath('name').children.first.to_s,
           :sym => wpt.xpath('sym').children.first.to_s

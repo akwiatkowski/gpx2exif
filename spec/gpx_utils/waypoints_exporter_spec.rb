@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe GarminUtils::WaypointsExporter do
+describe GpxUtils::WaypointsExporter do
   it "should create empty waypoint xml/gpx" do
-    g = GarminUtils::WaypointsExporter.new
+    g = GpxUtils::WaypointsExporter.new
     xml = g.to_xml
     xml.should be_kind_of(String)
 
@@ -10,7 +10,7 @@ describe GarminUtils::WaypointsExporter do
   end
 
   it "should create xml with 1 poi" do
-    g = GarminUtils::WaypointsExporter.new
+    g = GpxUtils::WaypointsExporter.new
     lat = 52.384444
     lon = 16.193056
     g.add(lat, lon, 'test', nil, Time.now - 3600, 120, nil)

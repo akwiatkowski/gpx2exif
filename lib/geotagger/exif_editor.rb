@@ -1,20 +1,5 @@
 require 'rubygems'
-begin
-  require 'mini_exiftool'
-rescue LoadError
-  puts "Exiftool probably not available"
-rescue
-  puts "Exiftool probably not available"
-end
-
-unless defined? MiniExiftool
-  class MiniExiftool
-    def initialize(*args)
-      # nothing
-    end
-  end
-end
-# end of ugly fix
+require 'mini_exiftool'
 
 $:.unshift(File.dirname(__FILE__))
 

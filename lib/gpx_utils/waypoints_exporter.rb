@@ -4,7 +4,7 @@ require 'yaml'
 
 $:.unshift(File.dirname(__FILE__))
 
-module GarminUtils
+module GpxUtils
   class WaypointsExporter
 
     def initialize
