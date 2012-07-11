@@ -11,25 +11,26 @@ module Gpx2png
       @width = @options[:width] || 3
       @aa = @options[:aa] == true
       @opacity = @options[:opacity] || 1.0
+      @licence_string = "Map data OpenStreetMap (CC-by-SA 2.0)"
 
       @line = Magick::Draw.new
       @line.stroke_antialias(@aa)
-      @line.text_antialias(@aa)
-      #@line.fill_opacity(0.0)
       @line.stroke(@color)
       @line.stroke_opacity(@opacity)
       @line.stroke_width(@width)
 
-      #@line.stroke_linecap('square')
-      #@line.stroke_linejoin('miter')
-      ## @line.pointsize(options[:axis_font_size])
-      #@line.font_family('helvetica')
-      #@line.font_style(Magick::NormalStyle)
-      #@line.text_align(Magick::LeftAlign)
+      @licence_text = Magick::Draw.new
+      @licence_text.text_antialias(@aa)
+      @licence_text.font_family('helvetica')
+      @licence_text.font_style(Magick::NormalStyle)
+      @licence_text.text_align(Magick::RightAlign)
+      @licence_text.pointsize(10)
     end
 
     # Create new (full) image
     def new_image(x, y)
+      @x = x
+      @y = y
       @image = Magick::Image.new(
         x,
         y
@@ -54,8 +55,14 @@ module Gpx2png
       )
     end
 
-    def save(filename)
+    def render
       @line.draw(@image)
+      @licence_text.text(@x - 10, @y - 10, @licence_string)
+      @licence_text.draw(@image)
+    end
+
+    def save(filename)
+      render
       @image.write(filename)
     end
 
