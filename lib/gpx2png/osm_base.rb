@@ -1,10 +1,12 @@
 require 'rubygems'
 require 'gpx2png/base'
+require 'net/http'
+require "uri"
 
 $:.unshift(File.dirname(__FILE__))
 
 module Gpx2png
-  class OsmBase
+  class OsmBase < Base
     TILE_WIDTH = 256
     TILE_HEIGHT = 256
 
@@ -70,7 +72,7 @@ module Gpx2png
       return { osm_title_coord: osm_tile_coord, pixel_offset: [x, y] }
     end
 
-    def last_calculations
+    def initial_calculations
       @lat_min = @coords.collect { |c| c[:lat] }.min
       @lat_max = @coords.collect { |c| c[:lat] }.max
       @lon_min = @coords.collect { |c| c[:lon] }.min
@@ -97,12 +99,8 @@ module Gpx2png
 
     def download_and_join_tiles
 
-      puts "Output image dimension #{@full_image_x}x#{@full_image_y}"
-      @full_image = ChunkyPNG::Image.new(
-        @full_image_x,
-        @full_image_y,
-        ChunkyPNG::Color::WHITE
-      )
+      puts "Output image dimension #{@full_image_x}x#{@full_image_y}" if @verbose
+      @r.new_image(@full_image_x, @full_image_y)
 
       # {:x, :y, :blob}
       @images = Array.new
@@ -115,25 +113,20 @@ module Gpx2png
           uri = URI.parse(url)
           response = Net::HTTP.get_response(uri)
           blob = response.body
-          image = ChunkyPNG::Image.from_blob(blob)
+
+          @r.add_tile(
+            blob,
+            (x - @tile_x_range.min) * TILE_WIDTH,
+            (y - @tile_y_range.min) * TILE_HEIGHT
+          )
 
           @images << {
             url: url,
-            image: image,
             x: x,
             y: y
           }
 
-          # compose image
-          x_offset = (x - @tile_x_range.min) * TILE_WIDTH
-          y_offset = (y - @tile_y_range.min) * TILE_HEIGHT
-          @full_image.compose!(
-            image,
-            x_offset,
-            y_offset
-          )
-
-          puts "processed #{x - @tile_x_range.min}x#{y - @tile_y_range.min} (max #{@tile_x_range.max - @tile_x_range.min}x#{@tile_y_range.max - @tile_y_range.min})"
+          puts "processed #{x - @tile_x_range.min}x#{y - @tile_y_range.min} (max #{@tile_x_range.max - @tile_x_range.min}x#{@tile_y_range.max - @tile_y_range.min})" if @verbose
         end
       end
 
@@ -157,10 +150,9 @@ module Gpx2png
         bitmap_xb = (point_to[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + point_to[:pixel_offset][0]
         bitmap_yb = (point_to[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_to[:pixel_offset][1]
 
-        @full_image.line(
+        @r.line(
           bitmap_xa, bitmap_ya,
-          bitmap_xb, bitmap_yb,
-          @color
+          bitmap_xb, bitmap_yb
         )
 
       end
@@ -168,15 +160,6 @@ module Gpx2png
 
     def expand_map
       # TODO expand min and max ranges
-    end
-
-
-    # MOVE
-
-    def to_png(filename)
-      download_and_join_tiles
-      @full_image.save(filename)
-      filename
     end
 
   end

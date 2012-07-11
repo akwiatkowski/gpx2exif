@@ -8,6 +8,7 @@ module Gpx2png
     def initialize
       @coords = Array.new
       @zoom = 9
+      @verbose = true
     end
 
     def add(lat, lon)
