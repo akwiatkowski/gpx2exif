@@ -6,9 +6,10 @@ $:.unshift(File.dirname(__FILE__))
 module Geotagger
   class ExifEditor
 
-    def initialize
+    def initialize(options = {})
       @images = Array.new
       @global_time_offset = 0
+      @verbose = options[:verbose]
     end
 
     attr_reader :images
@@ -20,7 +21,7 @@ module Geotagger
         :time => get_photo_time(path) + time_offset + @global_time_offset
       }
       @images << i
-      puts "Added file #{path}, time #{i[:time]}"
+      puts "Added file #{path}, time #{i[:time]}" if @verbose
     end
 
     def get_photo_time(path)
@@ -54,13 +55,12 @@ module Geotagger
       photo.save
 
       photo2 = MiniExiftool.new path
-      puts " - coord saved lat #{photo2['GPSLatitude']} lon #{photo2['GPSLongitude']}"
+      puts " - coord saved lat #{photo2['GPSLatitude']} lon #{photo2['GPSLongitude']}" if @verbose
 
       # exiftool -GPSMapDatum="WGS-84" -gps:GPSLatitude="34,57,57"
       # -gps:GPSLatitudeRef="N" -gps:GPSLongitude="83,17,59" -gps:GPSLongitudeRef="W"
       # -gps:GPSAltitudeRef="0" -GPSAltitude=1426 -gps:GPSMeasureMode=2 -City="RabunBald"
       # -State="North Carolina" -Country="USA" ~/Desktop/RabunBaldSummit_NC.jpg
-
     end
 
   end

@@ -8,12 +8,14 @@ $:.unshift(File.dirname(__FILE__))
 module Geotagger
   class Geotagger
 
-    def initialize
+    def initialize(options = {})
+      @verbose = options[:verbose]
       @ee = ExifEditor.new
-      #@ti = Geotagger::TrackImporter.new
       @ti = TrackImporter.new
+      @ti.verbose = @verbose
     end
 
+    # Add all GPX and images with
     def add_all_files(time_offset = 0)
       # add all GPX
       Dir.glob("**/*.GPX", File::FNM_CASEFOLD).each do |f|
@@ -39,10 +41,10 @@ module Geotagger
 
     def match_up
       @ee.images.each do |i|
-        puts "* searching for #{i[:path]}, time #{i[:time]}"
+        puts "* searching for #{i[:path]}, time #{i[:time]}" if @verbose
         i[:coord] = @ti.find_by_time(i[:time])
         if i[:coord].nil?
-          puts " - not found"
+          puts " - not found" if @verbose
         end
       end
 
@@ -52,7 +54,7 @@ module Geotagger
     def save!
       @ee.images.each do |i|
         if not i[:coord].nil?
-          puts "! saving for #{i[:path]}"
+          puts "! saving for #{i[:path]}" if @verbose
           @ee.set_photo_coords_internal(i)
         end
 
@@ -61,7 +63,7 @@ module Geotagger
 
     def simulate
       to_process = @ee.images.select { |i| not i[:coord].nil? }
-      puts "Result: to update #{to_process.size} from #{@ee.images.size}"
+      puts "Result: to update #{to_process.size} from #{@ee.images.size}" if @verbose
     end
 
   end

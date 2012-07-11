@@ -9,6 +9,8 @@ module Geotagger
 
     THRESHOLD = 5*60
 
+    attr_accessor :verbose
+
     # Only import valid coords
     def self.coord_valid?(lat, lon, elevation, time)
       return true if lat and lon and time
@@ -18,10 +20,10 @@ module Geotagger
     def find_by_time(time)
       selected_coords = @coords.select { |c| (c[:time].localtime - time.localtime).abs < THRESHOLD }
       selected_coords = selected_coords.sort { |a, b| (a[:time].localtime - time.localtime).abs <=> (b[:time].localtime - time.localtime).abs }
-      puts " - found #{selected_coords.size} coords within #{THRESHOLD}s from image time"
+      puts " - found #{selected_coords.size} coords within #{THRESHOLD}s from image time" if @verbose
       if selected_coords.size > 0
-        puts " - best is #{selected_coords.first[:time].localtime}, time offset #{selected_coords.first[:time].localtime - time.localtime}"
-        puts " - lat #{selected_coords.first[:lat]} lon #{selected_coords.first[:lon]}"
+        puts " - best is #{selected_coords.first[:time].localtime}, time offset #{selected_coords.first[:time].localtime - time.localtime}" if @verbose
+        puts " - lat #{selected_coords.first[:lat]} lon #{selected_coords.first[:lon]}" if @verbose
       end
 
       return selected_coords.first
