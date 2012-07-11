@@ -89,18 +89,21 @@ module Gpx2png
       # new image
       @full_image_x = (1 + @tile_x_range.max - @tile_x_range.min) * TILE_WIDTH
       @full_image_y = (1 + @tile_y_range.max - @tile_y_range.min) * TILE_HEIGHT
+      @r.x = @full_image_x
+      @r.y = @full_image_y
+
+      calculate_for_crop
     end
 
     attr_reader :lat_min, :lat_max, :lon_min, :lon_max
     attr_reader :tile_x_distance, :tile_y_distance
-
-    # --------------------------
-
+    # points for cropping
+    attr_reader :bitmap_point_x_max, :bitmap_point_x_min, :bitmap_point_y_max, :bitmap_point_y_min
 
     def download_and_join_tiles
 
       puts "Output image dimension #{@full_image_x}x#{@full_image_y}" if @verbose
-      @r.new_image(@full_image_x, @full_image_y)
+      @r.new_image
 
       # {:x, :y, :blob}
       @images = Array.new
@@ -132,6 +135,12 @@ module Gpx2png
 
       # sweet, image is joined
 
+      # min/max points used for cropping
+      @bitmap_point_x_max = (@full_image_x / 2).round
+      @bitmap_point_x_min = (@full_image_x / 2).round
+      @bitmap_point_y_max = (@full_image_y / 2).round
+      @bitmap_point_y_min = (@full_image_y / 2).round
+
       # add some coords to the map
       (1...@coords.size).each do |i|
         lat_from = @coords[i-1][:lat]
@@ -155,7 +164,33 @@ module Gpx2png
           bitmap_xb, bitmap_yb
         )
 
+        # updating points for cropping
+        # lazy way
+        #@bitmap_point_x_max = bitmap_xa if bitmap_xa > @bitmap_point_x_max
+        #@bitmap_point_x_max = bitmap_xb if bitmap_xb > @bitmap_point_x_max
+        #@bitmap_point_x_min = bitmap_xa if bitmap_xa < @bitmap_point_x_min
+        #@bitmap_point_x_min = bitmap_xb if bitmap_xb < @bitmap_point_x_min
+        #
+        #@bitmap_point_y_max = bitmap_xa if bitmap_xa > @bitmap_point_x_max
+        #@bitmap_point_y_max = bitmap_xb if bitmap_xb > @bitmap_point_x_max
+        #@bitmap_point_y_min = bitmap_xa if bitmap_xa < @bitmap_point_x_min
+        #@bitmap_point_y_min = bitmap_xb if bitmap_xb < @bitmap_point_x_min
+
       end
+
+      calculate_for_crop
+    end
+
+    # Calculate some numbers for cropping operation
+    def calculate_for_crop
+      point_min = self.class.point_on_image(@zoom, [@lat_min, @lon_min])
+      point_max = self.class.point_on_image(@zoom, [@lat_max, @lon_max])
+      @bitmap_point_x_min = (point_min[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + point_min[:pixel_offset][0]
+      @bitmap_point_x_max = (point_max[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + point_max[:pixel_offset][0]
+      @bitmap_point_y_max = (point_min[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_min[:pixel_offset][1]
+      @bitmap_point_y_min = (point_max[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_max[:pixel_offset][1]
+
+      @r.set_crop(@bitmap_point_x_min, @bitmap_point_x_max, @bitmap_point_y_min, @bitmap_point_y_max)
     end
 
     def expand_map

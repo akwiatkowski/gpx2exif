@@ -12,6 +12,8 @@ module Gpx2png
       @aa = @options[:aa] == true
       @opacity = @options[:opacity] || 1.0
       @licence_string = "Map data OpenStreetMap (CC-by-SA 2.0)"
+      @crop_margin = @options[:crop_margin] || 50
+      @crop_enabled = @options[:crop_enabled] == true
 
       @line = Magick::Draw.new
       @line.stroke_antialias(@aa)
@@ -27,13 +29,13 @@ module Gpx2png
       @licence_text.pointsize(10)
     end
 
+    attr_accessor :x, :y
+
     # Create new (full) image
-    def new_image(x, y)
-      @x = x
-      @y = y
+    def new_image
       @image = Magick::Image.new(
-        x,
-        y
+        @x,
+        @y
       )
     end
 
@@ -55,8 +57,40 @@ module Gpx2png
       )
     end
 
+    # Setup crop image using CSS padding style data
+    def set_crop(x_min, x_max, y_min, y_max)
+      puts @x, @y, @crop_margin, x_min, x_max, y_min, y_max
+
+      @crop_t = y_min - @crop_margin
+      @crop_r = (@x - x_max) - @crop_margin
+      @crop_b = (@y - y_max) - @crop_margin
+      @crop_l = x_min - @crop_margin
+
+      @crop_t = 0 if @crop_t < 0
+      @crop_r = 0 if @crop_r < 0
+      @crop_b = 0 if @crop_b < 0
+      @crop_l = 0 if @crop_l < 0
+    end
+
+    # Setup crop image using CSS padding style data
+    def crop!
+      return unless @crop_enabled
+
+      @new_x = @x - @crop_r.to_i - @crop_l.to_i
+      @new_y = @y - @crop_b.to_i - @crop_t.to_i
+      @image = @image.crop(@crop_l.to_i, @crop_t.to_i, @new_x, @new_y, true)
+      # changing image size
+      @x = @new_x
+      @y = @new_y
+
+      puts @x, @y
+    end
+
     def render
       @line.draw(@image)
+      # crop after drawing lines, before drawing "legend"
+      crop!
+      # "static" elements
       @licence_text.text(@x - 10, @y - 10, @licence_string)
       @licence_text.draw(@image)
     end

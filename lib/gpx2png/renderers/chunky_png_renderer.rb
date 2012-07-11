@@ -38,6 +38,10 @@ module Gpx2png
       )
     end
 
+    def crop
+      # TODO
+    end
+
     def save(filename)
       @image.save(filename)
     end
