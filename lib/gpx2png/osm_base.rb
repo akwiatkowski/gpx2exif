@@ -44,6 +44,28 @@ module Gpx2png
       return [lat_deg, lon_deg]
     end
 
+    # Lazy calc proper zoom for drawing
+    def self.calc_zoom(lat_min, lat_max, lon_min, lon_max, width, height)
+      # because I'm lazy! :] and math is not my best side
+
+      last_zoom = 5
+      (5..18).each do |zoom|
+        # calculate drawing tile size and pixel size
+        tile_min = convert(zoom, [lat_min, lon_min])
+        tile_max = convert(zoom, [lat_max, lon_max])
+        current_tile_x_distance = 1 + tile_max[0] - tile_min[0]
+        current_tile_y_distance = 1 + tile_min[1] - tile_max[1]
+        current_pixel_x_distance = current_tile_x_distance * TILE_WIDTH
+        current_pixel_y_distance = current_tile_y_distance * TILE_HEIGHT
+
+        if current_pixel_x_distance > width or current_pixel_y_distance > height
+          return last_zoom
+        end
+        last_zoom = zoom
+      end
+      return 18
+    end
+
     # Convert latlon deg coords to image point (x,y) and OSM tile coord
     # return where you should put point on tile
     def self.point_on_image(zoom, geo_coord)
@@ -78,6 +100,18 @@ module Gpx2png
       @lon_min = @coords.collect { |c| c[:lon] }.min
       @lon_max = @coords.collect { |c| c[:lon] }.max
 
+      # autozoom must be here
+      # drawing must fit into set resolution
+      # map must be bigger than set resolution
+      @best_full_image_x = 1000
+      @best_full_image_y = 1000
+      @new_zoom = self.class.calc_zoom(
+        @lat_min, @lat_max,
+        @lon_min, @lon_max,
+        @best_full_image_x, @best_full_image_y
+      )
+      puts @new_zoom
+
       @border_tiles = [
         self.class.convert(@zoom, [@lat_min, @lon_min]),
         self.class.convert(@zoom, [@lat_max, @lon_max])
@@ -95,13 +129,18 @@ module Gpx2png
       calculate_for_crop
     end
 
+    # Calculate zoom level
+    def auto_zoom_for(x = 0, y = 0)
+      # TODO
+    end
+
     attr_reader :lat_min, :lat_max, :lon_min, :lon_max
     attr_reader :tile_x_distance, :tile_y_distance
     # points for cropping
     attr_reader :bitmap_point_x_max, :bitmap_point_x_min, :bitmap_point_y_max, :bitmap_point_y_min
 
+    # Do everything
     def download_and_join_tiles
-
       puts "Output image dimension #{@full_image_x}x#{@full_image_y}" if @verbose
       @r.new_image
 
@@ -163,19 +202,6 @@ module Gpx2png
           bitmap_xa, bitmap_ya,
           bitmap_xb, bitmap_yb
         )
-
-        # updating points for cropping
-        # lazy way
-        #@bitmap_point_x_max = bitmap_xa if bitmap_xa > @bitmap_point_x_max
-        #@bitmap_point_x_max = bitmap_xb if bitmap_xb > @bitmap_point_x_max
-        #@bitmap_point_x_min = bitmap_xa if bitmap_xa < @bitmap_point_x_min
-        #@bitmap_point_x_min = bitmap_xb if bitmap_xb < @bitmap_point_x_min
-        #
-        #@bitmap_point_y_max = bitmap_xa if bitmap_xa > @bitmap_point_x_max
-        #@bitmap_point_y_max = bitmap_xb if bitmap_xb > @bitmap_point_x_max
-        #@bitmap_point_y_min = bitmap_xa if bitmap_xa < @bitmap_point_x_min
-        #@bitmap_point_y_min = bitmap_xb if bitmap_xb < @bitmap_point_x_min
-
       end
 
       calculate_for_crop

@@ -59,7 +59,7 @@ module Gpx2png
 
     # Setup crop image using CSS padding style data
     def set_crop(x_min, x_max, y_min, y_max)
-      puts @x, @y, @crop_margin, x_min, x_max, y_min, y_max
+      #puts @x, @y, @crop_margin, x_min, x_max, y_min, y_max
 
       @crop_t = y_min - @crop_margin
       @crop_r = (@x - x_max) - @crop_margin
@@ -82,8 +82,6 @@ module Gpx2png
       # changing image size
       @x = @new_x
       @y = @new_y
-
-      puts @x, @y
     end
 
     def render

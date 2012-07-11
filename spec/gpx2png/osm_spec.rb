@@ -36,6 +36,8 @@ describe Gpx2png::Osm do
     e.renderer_options = {aa: true, color: '#0000FF', opacity: 0.5, crop_enabled: true}
     e.coords = g.coords
     e.zoom = 13
+    #e.auto_zoom_for(2000,2000)
+
     e.to_png('samples/png_sample3_rmagick.png')
   end
 end
