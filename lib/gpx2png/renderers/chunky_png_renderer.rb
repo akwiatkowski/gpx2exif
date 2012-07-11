@@ -5,8 +5,10 @@ $:.unshift(File.dirname(__FILE__))
 
 module Gpx2png
   class ChunkyPngRenderer
-    def initialize
-      @color = ChunkyPNG::Color.from_hex('#FF0000')
+    def initialize(_options = {})
+      @options = _options || {}
+      @_color = @options[:color] || '#FF0000'
+      @color = ChunkyPNG::Color.from_hex(@_color)
     end
 
     # Create new (full) image

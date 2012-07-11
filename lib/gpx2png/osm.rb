@@ -6,12 +6,12 @@ $:.unshift(File.dirname(__FILE__))
 module Gpx2png
   class Osm < OsmBase
 
-    DEFAULT_RENDERER = :chunky
+    DEFAULT_RENDERER = :rmagick
     attr_accessor :renderer
 
     def initialize
       super
-      @renderer ||= :chunky
+      @renderer ||= DEFAULT_RENDERER
       @r = nil
     end
 
@@ -23,12 +23,17 @@ module Gpx2png
       filename
     end
 
+    attr_accessor :renderer_options
+
     # Get proper renderer class
     def setup_renderer
       case @renderer
-        when :chunky
-          require 'gpx2png/chunky_png_renderer'
-          @r = ChunkyPngRenderer.new
+        when :chunky_png
+          require 'gpx2png/renderers/chunky_png_renderer'
+          @r = ChunkyPngRenderer.new(@renderer_options)
+        when :rmagick
+          require 'gpx2png/renderers/rmagick_renderer'
+          @r = RmagickRenderer.new(@renderer_options)
         else
           raise ArgumentError
       end
