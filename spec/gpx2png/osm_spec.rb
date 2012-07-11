@@ -32,7 +32,7 @@ describe Gpx2png::Osm do
     #e.to_png('samples/png_sample3_chunky_png.png')
 
     e = Gpx2png::Osm.new
-    e.fixed_size(1000, 1000)
+    e.fixed_size(1500, 1500)
     e.renderer = :rmagick
     e.renderer_options = {aa: true, color: '#0000FF', opacity: 0.5, crop_enabled: true}
     e.coords = g.coords

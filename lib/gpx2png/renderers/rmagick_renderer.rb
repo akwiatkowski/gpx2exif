@@ -72,6 +72,20 @@ module Gpx2png
       @crop_l = 0 if @crop_l < 0
     end
 
+    # Setup crop for autozoom/fixed size
+    def set_crop_fixed(x_center, y_center, width, height)
+      # TODO fix round errors
+      @crop_margin = 0
+      @crop_enabled = true
+
+      set_crop(
+        x_center - (width / 2),
+        x_center + (width / 2),
+        y_center - (height / 2),
+        y_center + (height / 2)
+      )
+    end
+
     # Setup crop image using CSS padding style data
     def crop!
       return unless @crop_enabled
@@ -82,6 +96,8 @@ module Gpx2png
       # changing image size
       @x = @new_x
       @y = @new_y
+
+      puts @new_x, @new_y
     end
 
     def render

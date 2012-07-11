@@ -131,8 +131,8 @@ module Gpx2png
       # both sizes are enlarged
       # = ( ( (preferred size - real size) / tile width ) / 2 ).ceil
       if @fixed_width and @fixed_height
-        x_axis_expand_count = ((@best_full_image_x - (1 + @tile_x_range.max - @tile_x_range.min) * TILE_WIDTH).to_f / (TILE_WIDTH.to_f * 2.0)).ceil
-        y_axis_expand_count = ((@best_full_image_y - (1 + @tile_y_range.max - @tile_y_range.min) * TILE_HEIGHT).to_f / (TILE_HEIGHT.to_f * 2.0)).ceil
+        x_axis_expand_count = ((@fixed_width - (1 + @tile_x_range.max - @tile_x_range.min) * TILE_WIDTH).to_f / (TILE_WIDTH.to_f * 2.0)).ceil
+        y_axis_expand_count = ((@fixed_height - (1 + @tile_y_range.max - @tile_y_range.min) * TILE_HEIGHT).to_f / (TILE_HEIGHT.to_f * 2.0)).ceil
         puts "Expanding X tiles from both sides #{x_axis_expand_count}" if @verbose
         puts "Expanding Y tiles from both sides #{y_axis_expand_count}" if @verbose
         @tile_x_range = ((@tile_x_range.min - x_axis_expand_count)..(@tile_x_range.max + x_axis_expand_count))
@@ -227,7 +227,7 @@ module Gpx2png
         )
       end
 
-      calculate_for_crop
+      #calculate_for_crop
     end
 
     # Calculate some numbers for cropping operation
@@ -251,7 +251,10 @@ module Gpx2png
       @bitmap_point_y_max = (point_min[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_min[:pixel_offset][1]
       @bitmap_point_y_min = (point_max[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + point_max[:pixel_offset][1]
 
-      @r.set_crop(@bitmap_point_x_min, @bitmap_point_x_max, @bitmap_point_y_min, @bitmap_point_y_max)
+      bitmap_x_center = (@bitmap_point_x_min + @bitmap_point_x_max) / 2
+      bitmap_y_center = (@bitmap_point_y_min + @bitmap_point_y_max) / 2
+
+      @r.set_crop_fixed(bitmap_x_center, bitmap_y_center, @fixed_width, @fixed_height)
     end
 
     def expand_map
