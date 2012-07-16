@@ -115,6 +115,7 @@ module Gpx2png
     end
 
     def to_png
+      render
       @image.format = 'PNG'
       @image.to_blob
     end
