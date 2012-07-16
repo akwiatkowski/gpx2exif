@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-06-05"
+  s.date = "2012-07-16"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
   s.executables = ["geotag_all_images", "geotag_simulate"]
@@ -27,13 +27,22 @@ Gem::Specification.new do |s|
     "bin/generate_garmin_waypoints",
     "bin/geotag_all_images",
     "bin/geotag_simulate",
-    "lib/garmin_utils.rb",
-    "lib/garmin_utils/gpx_waypoint_parser.rb",
-    "lib/garmin_utils/waypoint_list_generator.rb",
+    "lib/geotagger.rb",
+    "lib/geotagger/exif_editor.rb",
+    "lib/geotagger/geotagger.rb",
+    "lib/geotagger/track_importer.rb",
     "lib/gpx2exif.rb",
-    "lib/gpx2exif/exif_editor.rb",
-    "lib/gpx2exif/geo_manager.rb",
-    "lib/gpx2exif/gpx_parser.rb"
+    "lib/gpx2png/base.rb",
+    "lib/gpx2png/gpx2png.rb",
+    "lib/gpx2png/osm.rb",
+    "lib/gpx2png/osm_base.rb",
+    "lib/gpx2png/renderers/chunky_png_renderer.rb",
+    "lib/gpx2png/renderers/rmagick_renderer.rb",
+    "lib/gpx_utils.rb",
+    "lib/gpx_utils/track_importer.rb",
+    "lib/gpx_utils/waypoints_exporter.rb",
+    "lib/gpx_utils/waypoints_importer.rb",
+    "lib/mini_exiftool/mini_exiftool.rb"
   ]
   s.homepage = "http://github.com/akwiatkowski/gpx2exif"
   s.licenses = ["LGPLv3"]
