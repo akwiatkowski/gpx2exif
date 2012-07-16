@@ -15,12 +15,21 @@ module Gpx2png
       @r = nil
     end
 
-    def to_png(filename)
+    def save(filename)
+      render
+      @r.save(filename)
+      filename
+    end
+
+    def to_png
+      render
+      @r.to_png
+    end
+
+    def render
       setup_renderer
       initial_calculations
       download_and_join_tiles
-      @r.save(filename)
-      filename
     end
 
     attr_accessor :renderer_options

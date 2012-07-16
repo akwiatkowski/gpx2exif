@@ -8,7 +8,7 @@ describe Gpx2png::Osm do
   #  e.add(51.0, 20.0)
   #  e.add(51.0, 21.0)
   #  e.add(50.0, 21.0)
-  #  e.to_png('samples/png_sample1.png')
+  #  e.save('samples/tmp/png_sample1.png')
   #end
   #
   #it "should create using GPX file" do
@@ -18,7 +18,7 @@ describe Gpx2png::Osm do
   #  e = Gpx2png::Osm.new
   #  e.coords = g.coords
   #  e.zoom = 8
-  #  e.to_png('samples/png_sample2.png')
+  #  e.save('samples/tmp/png_sample2.png')
   #end
 
   it "should create using GPX file using chunky_png" do
@@ -29,7 +29,7 @@ describe Gpx2png::Osm do
     e.renderer = :chunky_png
     e.coords = g.coords
     e.zoom = 10
-    e.to_png('samples/png_sample3_chunky_png.png')
+    e.save('samples/tmp/png_sample3_chunky_png.png')
   end
 
   it "should create using GPX file using rmagick" do
@@ -44,7 +44,7 @@ describe Gpx2png::Osm do
     e.zoom = 13
     #e.auto_zoom_for(2000,2000)
 
-    e.to_png('samples/png_sample3_rmagick.png')
+    e.save('samples/tmp/png_sample3_rmagick.png')
   end
 
   it "should create using GPX file using rmagick with fixed resolutions" do
@@ -70,7 +70,7 @@ describe Gpx2png::Osm do
       e.renderer_options = {aa: false, color: '#0000FF', opacity: 0.5, crop_enabled: true}
       e.coords = g.coords
       #e.zoom = 13
-      e.to_png("samples/png_sample4_rmagick_fixed_#{width}_#{height}.png")
+      e.save("samples/tmp/png_sample4_rmagick_fixed_#{width}_#{height}.png")
     end
 
 
