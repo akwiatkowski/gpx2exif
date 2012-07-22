@@ -51,10 +51,6 @@ module Gpx2png
     def self.calc_zoom(lat_min, lat_max, lon_min, lon_max, width, height)
       # because I'm lazy! :] and math is not my best side
 
-      # weird things come out if width < TILE_WIDTH or height < TILE_HEIGHT
-      #width = TILE_WIDTH if width < TILE_WIDTH
-      #height = TILE_HEIGHT if height < TILE_HEIGHT
-
       last_zoom = 2
       (5..18).each do |zoom|
         # calculate drawing tile size and pixel size
@@ -62,7 +58,6 @@ module Gpx2png
         tile_max = point_on_absolute_image(zoom, [lat_max, lon_max])
         current_pixel_x_distance = tile_max[0] - tile_min[0]
         current_pixel_y_distance = tile_min[1] - tile_max[1]
-        # puts "#{current_pixel_x_distance} > #{width} or #{current_pixel_y_distance} > #{height}"
         if current_pixel_x_distance > width or current_pixel_y_distance > height
           return last_zoom
         end
