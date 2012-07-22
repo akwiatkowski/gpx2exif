@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'gpx2exif'
+require 'geotagger/geotagger'
 
 puts "Are you sure? It is evil script which probably eat photos of your dog and family. Uppercase 'yes' and enter if you want to continue."
 str = gets
@@ -12,7 +12,7 @@ time_offset = time_offset.to_i
 
 exit(0) unless str.strip == 'YES'
 
-g = Gpx2exif::GeoManager.new
+g = Geotagger::Geotagger.new(verbose: true)
 g.add_all_files(time_offset)
 g.match_up
 g.save!

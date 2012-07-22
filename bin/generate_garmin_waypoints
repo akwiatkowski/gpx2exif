@@ -22,7 +22,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-g = GpxUtils::WaypointListGenerator.new
+g = GpxUtils::WaypointsExporter.new
 if options[:yaml]
   g.add_yaml_file(options[:yaml])
 end
