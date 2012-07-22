@@ -51,16 +51,18 @@ module Gpx2png
     def self.calc_zoom(lat_min, lat_max, lon_min, lon_max, width, height)
       # because I'm lazy! :] and math is not my best side
 
-      last_zoom = 5
+      # weird things come out if width < TILE_WIDTH or height < TILE_HEIGHT
+      #width = TILE_WIDTH if width < TILE_WIDTH
+      #height = TILE_HEIGHT if height < TILE_HEIGHT
+
+      last_zoom = 2
       (5..18).each do |zoom|
         # calculate drawing tile size and pixel size
-        tile_min = convert(zoom, [lat_min, lon_min])
-        tile_max = convert(zoom, [lat_max, lon_max])
-        current_tile_x_distance = 1 + tile_max[0] - tile_min[0]
-        current_tile_y_distance = 1 + tile_min[1] - tile_max[1]
-        current_pixel_x_distance = current_tile_x_distance * TILE_WIDTH
-        current_pixel_y_distance = current_tile_y_distance * TILE_HEIGHT
-
+        tile_min = point_on_absolute_image(zoom, [lat_min, lon_min])
+        tile_max = point_on_absolute_image(zoom, [lat_max, lon_max])
+        current_pixel_x_distance = tile_max[0] - tile_min[0]
+        current_pixel_y_distance = tile_min[1] - tile_max[1]
+        # puts "#{current_pixel_x_distance} > #{width} or #{current_pixel_y_distance} > #{height}"
         if current_pixel_x_distance > width or current_pixel_y_distance > height
           return last_zoom
         end
@@ -95,6 +97,16 @@ module Gpx2png
       y = (TILE_HEIGHT.to_f * (y_offset / y_distance)).round
 
       return { osm_title_coord: osm_tile_coord, pixel_offset: [x, y] }
+    end
+
+    # Useful for calculating distance on output image
+    # It is not position on output image because we don't know tile coords
+    # For upper-left tile
+    def self.point_on_absolute_image(zoom, geo_coord)
+      _p = point_on_image(zoom, geo_coord)
+      _x = _p[:osm_title_coord][0] * TILE_WIDTH + _p[:pixel_offset][0]
+      _y = _p[:osm_title_coord][1] * TILE_WIDTH + _p[:pixel_offset][1]
+      return [_x, _y]
     end
 
     # Create image with fixed size

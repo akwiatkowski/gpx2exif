@@ -65,12 +65,13 @@ describe Gpx2png::Osm do
   #    height = resolution[1]
   #
   #    e = Gpx2png::Osm.new
+  #    e.simulate_download = true
   #    e.fixed_size(width, height)
   #    e.renderer = :rmagick
   #    e.renderer_options = {aa: false, color: '#0000FF', opacity: 0.5, crop_enabled: true}
   #    e.coords = g.coords
   #    #e.zoom = 13
-  #    e.save("samples/tmp/png_sample4_rmagick_fixed_#{width}_#{height}.png")
+  #    e.save("samples/tmp/png_sample5_simulation_fixed_#{width}_#{height}.png")
   #  end
   #end
 
@@ -80,11 +81,11 @@ describe Gpx2png::Osm do
 
     e = Gpx2png::Osm.new
     e.simulate_download = true
-    e.fixed_size(1500, 1500)
+    e.fixed_size(200, 200)
     e.renderer = :rmagick
-    e.renderer_options = { aa: true, color: '#0000FF', opacity: 0.5, crop_enabled: true }
+    #e.renderer_options = { aa: true, color: '#0000FF', opacity: 0.5, crop_enabled: true }
     e.coords = g.coords
-    #e.zoom = 13
+    #e.zoom = 7
     #e.auto_zoom_for(2000,2000)
 
     e.save('samples/tmp/png_sample5.png')
