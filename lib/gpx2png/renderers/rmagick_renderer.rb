@@ -96,8 +96,6 @@ module Gpx2png
       # changing image size
       @x = @new_x
       @y = @new_y
-
-      puts @new_x, @new_y
     end
 
     def render

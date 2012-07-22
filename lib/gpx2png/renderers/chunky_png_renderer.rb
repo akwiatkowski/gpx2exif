@@ -3,6 +3,7 @@ require 'chunky_png'
 
 $:.unshift(File.dirname(__FILE__))
 
+# This renderer has some/a lot of features missing
 module Gpx2png
   class ChunkyPngRenderer
     def initialize(_options = {})
@@ -11,11 +12,13 @@ module Gpx2png
       @color = ChunkyPNG::Color.from_hex(@_color)
     end
 
+    attr_accessor :x, :y
+
     # Create new (full) image
-    def new_image(x, y)
+    def new_image
       @image = ChunkyPNG::Image.new(
-        x,
-        y,
+        @x,
+        @y,
         ChunkyPNG::Color::WHITE
       )
     end
@@ -36,6 +39,10 @@ module Gpx2png
         xb, yb,
         @color
       )
+    end
+
+    def set_crop(x_min, x_max, y_min, y_max)
+      # TODO
     end
 
     def crop
