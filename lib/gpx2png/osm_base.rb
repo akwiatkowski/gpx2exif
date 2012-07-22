@@ -10,6 +10,9 @@ module Gpx2png
     TILE_WIDTH = 256
     TILE_HEIGHT = 256
 
+    # if true it will not download tiles
+    attr_accessor :simulate_download
+
     # http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#X_and_Y
     # Convert latlon deg to OSM tile coords
     def self.convert(zoom, coord)
@@ -170,14 +173,19 @@ module Gpx2png
       # {:x, :y, :blob}
       @images = Array.new
 
+
       @tile_x_range.each do |x|
         @tile_y_range.each do |y|
           url = self.class.url(@zoom, [x, y])
 
           # blob time
-          uri = URI.parse(url)
-          response = Net::HTTP.get_response(uri)
-          blob = response.body
+          unless @simulate_download
+            uri = URI.parse(url)
+            response = Net::HTTP.get_response(uri)
+            blob = response.body
+          else
+            blob = @r.blank_tile(TILE_WIDTH, TILE_HEIGHT, x+y)
+          end
 
           @r.add_tile(
             blob,

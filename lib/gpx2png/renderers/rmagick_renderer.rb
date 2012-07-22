@@ -6,7 +6,7 @@ $:.unshift(File.dirname(__FILE__))
 module Gpx2png
   class RmagickRenderer
     def initialize(_options = { })
-      @options = _options || {}
+      @options = _options || { }
       @color = @options[:color] || '#FF0000'
       @width = @options[:width] || 3
       @aa = @options[:aa] == true
@@ -118,6 +118,19 @@ module Gpx2png
       render
       @image.format = 'PNG'
       @image.to_blob
+    end
+
+    def blank_tile(width, height, index = 0)
+      _image = Magick::Image.new(
+        width,
+        height
+      ) do |i|
+        _color = "#dddddd"
+        _color = "#eeeeee" if index % 2 == 0
+        i.background_color = _color
+      end
+      _image.format = 'PNG'
+      _image.to_blob
     end
 
   end

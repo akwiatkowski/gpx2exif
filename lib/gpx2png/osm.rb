@@ -18,7 +18,6 @@ module Gpx2png
     def save(filename)
       render
       @r.save(filename)
-      filename
     end
 
     def to_png
