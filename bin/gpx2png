@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'gpx2exif'
+require 'gpx2png/osm'
+require 'optparse'
+
+options = { }
+OptionParser.new do |opts|
+  opts.banner = "Usage: gpx2png [options]"
+
+  opts.on("-g", "--gpx FILE", "Input GPX file") do |v|
+    options[:gpx] = v
+  end
+  opts.on("-z", "--zoom ZOOM", "Set zoom") do |v|
+    options[:zoom] = v
+  end
+  opts.on("-s", "--size WIDTHxHEIGHT", "Set output image size (better result)") do |v|
+    options[:size] = v
+  end
+  opts.on("-o", "--output FILE", "Output image file") do |v|
+    options[:output_file] = v
+  end
+end.parse!
+
+unless options[:gpx]
+  puts "Input GPX file needed"
+  @fail = true
+end
+unless options[:output_file]
+  puts "Output image file needed"
+  @fail = true
+end
+if options[:zoom].nil? and options[:size].nil?
+  puts "Zoom or image size needed"
+  @fail = true
+end
+
+unless @fail
+  g = GpxUtils::TrackImporter.new
+  g.add_file(options[:gpx])
+
+  e = Gpx2png::Osm.new
+  e.coords = g.coords
+
+  if options[:size]
+    # constant size
+    options[:size] =~ /(\d+)x(\d+)/
+    e.fixed_size($1.to_i, $1.to_i)
+  else
+    # constant zoom
+    e.zoom = options[:zoom].to_i
+    e.renderer_options = {crop_enabled: true}
+  end
+
+  e.save(options[:output_file])
+end

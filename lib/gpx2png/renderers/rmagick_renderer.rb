@@ -59,7 +59,7 @@ module Gpx2png
 
     # Setup crop image using CSS padding style data
     def set_crop(x_min, x_max, y_min, y_max)
-      #puts @x, @y, @crop_margin, x_min, x_max, y_min, y_max
+      # puts @x, @y, @crop_margin, x_min, x_max, y_min, y_max
 
       @crop_t = y_min - @crop_margin
       @crop_r = (@x - x_max) - @crop_margin
@@ -74,7 +74,6 @@ module Gpx2png
 
     # Setup crop for autozoom/fixed size
     def set_crop_fixed(x_center, y_center, width, height)
-      # TODO fix round errors
       @crop_margin = 0
       @crop_enabled = true
 

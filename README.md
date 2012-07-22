@@ -65,6 +65,34 @@ How to use it
 
   generate_garmin_waypoints -y samples/sample_yaml_pois.yml -o file.gpx
 
+
+Render track with OpenStreetMap
+---------------------
+
+You can "convert" your tracks to images using this command.
+
+How to use it
+-------------
+
+1. Please check if you have installed RMagick gem.
+
+2. Run command.
+
+  gpx2png -g <input GPX file> -s <image size, format: WIDTHxHEIGHT> -o <output PPNG file>
+
+  Example:
+
+  gpx2png -g spec/fixtures/sample.gpx -s 800x600 -o map.png
+
+3. You can specify zoom.
+
+  gpx2png -g <input GPX file> -z <zoom, best results if between 9 and 15, max 18> -o <output PPNG file>
+
+  Example:
+
+  gpx2png -g spec/fixtures/sample.gpx -z 11 -o map.png
+
+
 Contributing to gpx2xif
 -------------------------------
 
