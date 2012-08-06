@@ -92,7 +92,7 @@ How to use it
 
   gpx2png -g spec/fixtures/sample.gpx -z 11 -o map.png
 
-4. Adding -u forces using [![UMP tiles]](http://ump.waw.pl/) .
+4. Adding -u forces using [UMP tiles](http://ump.waw.pl/) .
 
 
 Contributing to gpx2xif
