@@ -11,7 +11,6 @@ module Gpx2png
       @width = @options[:width] || 3
       @aa = @options[:aa] == true
       @opacity = @options[:opacity] || 1.0
-      @licence_string = "Map data OpenStreetMap (CC-by-SA 2.0)"
       @crop_margin = @options[:crop_margin] || 50
       @crop_enabled = @options[:crop_enabled] == true
 
@@ -26,10 +25,11 @@ module Gpx2png
       @licence_text.font_family('helvetica')
       @licence_text.font_style(Magick::NormalStyle)
       @licence_text.text_align(Magick::RightAlign)
-      @licence_text.pointsize(10)
+      @licence_text.pointsize(12)
     end
 
     attr_accessor :x, :y
+    attr_accessor :licence_string
 
     # Create new (full) image
     def new_image

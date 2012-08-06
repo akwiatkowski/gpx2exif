@@ -276,5 +276,9 @@ module Gpx2png
       # TODO expand min and max ranges
     end
 
+    def self.licence_string
+      "Map data OpenStreetMap (CC-by-SA 2.0)"
+    end
+
   end
 end

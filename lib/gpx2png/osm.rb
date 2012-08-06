@@ -42,6 +42,7 @@ module Gpx2png
         when :rmagick
           require 'gpx2png/renderers/rmagick_renderer'
           @r = RmagickRenderer.new(@renderer_options)
+          @r.licence_string = self.class.licence_string
         else
           raise ArgumentError
       end

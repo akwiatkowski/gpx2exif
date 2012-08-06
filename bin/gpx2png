@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'gpx2exif'
 require 'gpx2png/osm'
+require 'gpx2png/ump'
 require 'optparse'
 
 options = { }
@@ -20,6 +21,9 @@ OptionParser.new do |opts|
   end
   opts.on("-o", "--output FILE", "Output image file") do |v|
     options[:output_file] = v
+  end
+  opts.on("-u", "--ump", "Use UMP tiles rather than OSM") do
+    options[:ump] = true
   end
 end.parse!
 
@@ -40,7 +44,11 @@ unless @fail
   g = GpxUtils::TrackImporter.new
   g.add_file(options[:gpx])
 
-  e = Gpx2png::Osm.new
+  if options[:ump]
+    e = Gpx2png::Ump.new
+  else
+    e = Gpx2png::Osm.new
+  end
   e.coords = g.coords
 
   if options[:size]
@@ -55,3 +63,6 @@ unless @fail
 
   e.save(options[:output_file])
 end
+
+# testing
+# ruby -Ilib bin/gpx2png -g spec/fixtures/sample.gpx -s 400x400 -o samples/tmp/cli_test.png -u
