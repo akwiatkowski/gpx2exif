@@ -78,7 +78,7 @@ How to use it
 
 2. Run command.
 
-  gpx2png -g <input GPX file> -s <image size, format: WIDTHxHEIGHT> -o <output PPNG file>
+  gpx2png -g [input GPX file] -s [image size, format: WIDTHxHEIGHT] -o [output PPNG file]
 
   Example:
 
@@ -86,11 +86,13 @@ How to use it
 
 3. You can specify zoom.
 
-  gpx2png -g <input GPX file> -z <zoom, best results if between 9 and 15, max 18> -o <output PPNG file>
+  gpx2png -g [input GPX file] -z [zoom, best results between 9 and 15, max 18] -o [output PPNG file]
 
   Example:
 
   gpx2png -g spec/fixtures/sample.gpx -z 11 -o map.png
+
+4. Adding -u forces using [![UMP tiles]](http://ump.waw.pl/) .
 
 
 Contributing to gpx2xif
