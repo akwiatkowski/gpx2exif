@@ -20,6 +20,14 @@ module Gpx2png
       @line.stroke_opacity(@opacity)
       @line.stroke_width(@width)
 
+      @text = Magick::Draw.new
+      @text.text_antialias(@aa)
+      @text.font_family('helvetica')
+      @text.font_style(Magick::NormalStyle)
+      #@text.text_align(Magick::RightAlign)
+      @text.pointsize(12)
+
+
       @licence_text = Magick::Draw.new
       @licence_text.text_antialias(@aa)
       @licence_text.font_family('helvetica')
@@ -103,13 +111,20 @@ module Gpx2png
     def render_points
       @poi_images.each do |p|
         img_tile = Magick::Image.from_blob(p[:blob])[0]
+        p[:xc] = p[:x] - img_tile.columns / 2
+        p[:yc] = p[:y] - img_tile.rows / 2
         @image = @image.composite(
           img_tile,
-          p[:x] - img_tile.columns / 2,
-          p[:y] -img_tile.rows / 2,
+          p[:xc],
+          p[:yc],
           Magick::OverCompositeOp
         )
       end
+
+      @poi_images.each do |p|
+        @text.text(p[:x] + 10, p[:y] + 2, p[:label].to_s + " ")
+      end
+      @text.draw(@image)
     end
 
     def render
