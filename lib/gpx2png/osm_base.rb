@@ -251,7 +251,10 @@ module Gpx2png
         bitmap_x = (p[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + p[:pixel_offset][0]
         bitmap_y = (p[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + p[:pixel_offset][1]
 
-        @r.add_point_image(point[:blob], bitmap_x, bitmap_y)
+        point[:x] = bitmap_x
+        point[:y] = bitmap_y
+
+        @r.poi_images << point
       end
     end
 

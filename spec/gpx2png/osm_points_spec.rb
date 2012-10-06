@@ -10,9 +10,9 @@ describe Gpx2png::Osm do
     e = Gpx2png::Osm.new
     e.coords = g.coords
 
-    e.fixed_size(200, 200)
+    e.fixed_size(500, 500)
     e.add_point(
-      blob: File.read("spec/fixtures/blue-flag1.gif"),
+      blob: File.read("spec/fixtures/dot.png"),
       label: 'test',
       lat: g.coords.first[:lat],
       lon: g.coords.first[:lon]

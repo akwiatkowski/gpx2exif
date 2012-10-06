@@ -26,26 +26,19 @@ module Gpx2png
       @licence_text.font_style(Magick::NormalStyle)
       @licence_text.text_align(Magick::RightAlign)
       @licence_text.pointsize(12)
+
+      @poi_images = Array.new
     end
 
     attr_accessor :x, :y
     attr_accessor :licence_string
+    attr_accessor :poi_images
 
     # Create new (full) image
     def new_image
       @image = Magick::Image.new(
         @x,
         @y
-      )
-    end
-
-    def add_point_image(blob, x_offset, y_offset)
-      tile_image = Magick::Image.from_blob(blob)[0]
-      @image = @image.composite(
-        tile_image,
-        x_offset,
-        y_offset,
-        Magick::OverCompositeOp
       )
     end
 
@@ -107,8 +100,23 @@ module Gpx2png
       @y = @new_y
     end
 
+    def render_points
+      @poi_images.each do |p|
+        img_tile = Magick::Image.from_blob(p[:blob])[0]
+        @image = @image.composite(
+          img_tile,
+          p[:x] - img_tile.columns / 2,
+          p[:y] -img_tile.rows / 2,
+          Magick::OverCompositeOp
+        )
+      end
+    end
+
     def render
       @line.draw(@image)
+      # draw point images
+      render_points
+
       # crop after drawing lines, before drawing "legend"
       crop!
       # "static" elements
