@@ -23,6 +23,10 @@ module Gpx2png
       )
     end
 
+    def add_point_image(blob, x_offset, y_offset)
+      # not implemented
+    end
+
     # Add one tile to full image
     def add_tile(blob, x_offset, y_offset)
       tile_image = ChunkyPNG::Image.from_blob(blob)

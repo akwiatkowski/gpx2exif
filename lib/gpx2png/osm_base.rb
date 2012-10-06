@@ -242,7 +242,17 @@ module Gpx2png
         )
       end
 
-      #calculate_for_crop
+      # add points
+      @points.each do |point|
+        lat = point[:lat]
+        lon = point[:lon]
+
+        p = self.class.point_on_image(@zoom, [lat, lon])
+        bitmap_x = (p[:osm_title_coord][0] - @tile_x_range.min) * TILE_WIDTH + p[:pixel_offset][0]
+        bitmap_y = (p[:osm_title_coord][1] - @tile_y_range.min) * TILE_HEIGHT + p[:pixel_offset][1]
+
+        @r.add_point_image(point[:blob], bitmap_x, bitmap_y)
+      end
     end
 
     # Calculate some numbers for cropping operation
