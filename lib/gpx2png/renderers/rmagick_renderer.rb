@@ -24,7 +24,7 @@ module Gpx2png
       @text.text_antialias(@aa)
       @text.font_family('helvetica')
       @text.font_style(Magick::NormalStyle)
-      #@text.text_align(Magick::RightAlign)
+      @text.text_align(Magick::RightAlign)
       @text.pointsize(12)
 
 
@@ -108,35 +108,46 @@ module Gpx2png
       @y = @new_y
     end
 
-    def render_points
+    # Render only marker images, and perform some calculations
+    def render_markers
       @poi_images.each do |p|
         img_tile = Magick::Image.from_blob(p[:blob])[0]
-        p[:xc] = p[:x] - img_tile.columns / 2
-        p[:yc] = p[:y] - img_tile.rows / 2
+        p[:x_after_crop] = p[:x] - @crop_l.to_i
+        p[:y_after_crop] = p[:y] - @crop_t.to_i
+        p[:x_center] = p[:x_after_crop] - img_tile.columns / 2
+        p[:y_center] = p[:y_after_crop] - img_tile.rows / 2
+        p[:x_next_to_image] = p[:x_after_crop] + img_tile.columns
+
         @image = @image.composite(
           img_tile,
-          p[:xc],
-          p[:yc],
+          p[:x_center],
+          p[:y_center],
           Magick::OverCompositeOp
         )
       end
+    end
 
+    # Render nice looking labels
+    def render_marker_labels
       @poi_images.each do |p|
-        @text.text(p[:x] + 10, p[:y] + 2, p[:label].to_s + " ")
+        @text.text(p[:x_next_to_image], p[:y_after_crop], p[:label].to_s + " ")
       end
       @text.draw(@image)
     end
 
     def render
       @line.draw(@image)
-      # draw point images
-      render_points
 
       # crop after drawing lines, before drawing "legend"
       crop!
+
       # "static" elements
       @licence_text.text(@x - 10, @y - 10, @licence_string)
       @licence_text.draw(@image)
+
+      # draw point images
+      render_markers
+      render_marker_labels
     end
 
     def save(filename)
