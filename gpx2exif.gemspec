@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gpx2exif"
-  s.version = "0.1.1"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-08-06"
+  s.date = "2012-10-07"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
   s.executables = ["geotag_all_images", "geotag_simulate", "generate_garmin_waypoints", "gpx2png"]
@@ -33,8 +33,8 @@ Gem::Specification.new do |s|
     "lib/geotagger/geotagger.rb",
     "lib/geotagger/track_importer.rb",
     "lib/gpx2exif.rb",
+    "lib/gpx2png/assets/sample_marker.rb",
     "lib/gpx2png/base.rb",
-    "lib/gpx2png/gpx2png.rb",
     "lib/gpx2png/osm.rb",
     "lib/gpx2png/osm_base.rb",
     "lib/gpx2png/renderers/chunky_png_renderer.rb",
