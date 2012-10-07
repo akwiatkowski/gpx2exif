@@ -12,13 +12,19 @@ describe Gpx2png::Osm do
 
     e.simulate_download = true
 
-    e.fixed_size(300, 300)
-    e.add_point(
+    e.fixed_size(600, 600)
+    e.add_marker(
       # blob: File.read("spec/fixtures/dot.png"), # added default marker
-      label: 'test',
+      label: 'start of track',
       lat: g.coords.first[:lat],
       lon: g.coords.first[:lon]
     )
-    e.save("samples/tmp/png_with_points.png")
+    e.add_marker(
+      # blob: File.read("spec/fixtures/dot.png"), # added default marker
+      label: 'end of track',
+      lat: g.coords.last[:lat],
+      lon: g.coords.last[:lon]
+    )
+    e.save("samples/tmp/png_with_markerss.png")
   end
 end

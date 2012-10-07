@@ -243,7 +243,7 @@ module Gpx2png
       end
 
       # add points
-      @points.each do |point|
+      @markers.each do |point|
         lat = point[:lat]
         lon = point[:lon]
 
@@ -254,7 +254,7 @@ module Gpx2png
         point[:x] = bitmap_x
         point[:y] = bitmap_y
 
-        @r.poi_images << point
+        @r.markers << point
       end
     end
 

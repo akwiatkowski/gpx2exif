@@ -21,12 +21,12 @@ module Gpx2png
       @line.stroke_opacity(@opacity)
       @line.stroke_width(@width)
 
-      @text = Magick::Draw.new
-      @text.text_antialias(@aa)
-      @text.font_family('helvetica')
-      @text.font_style(Magick::NormalStyle)
-      @text.text_align(Magick::RightAlign)
-      @text.pointsize(12)
+      @marker_label = Magick::Draw.new
+      @marker_label.text_antialias(@aa)
+      @marker_label.font_family('helvetica')
+      @marker_label.font_style(Magick::NormalStyle)
+      @marker_label.text_align(Magick::LeftAlign)
+      @marker_label.pointsize(12)
 
 
       @licence_text = Magick::Draw.new
@@ -36,12 +36,12 @@ module Gpx2png
       @licence_text.text_align(Magick::RightAlign)
       @licence_text.pointsize(12)
 
-      @poi_images = Array.new
+      @markers = Array.new
     end
 
     attr_accessor :x, :y
     attr_accessor :licence_string
-    attr_accessor :poi_images
+    attr_accessor :markers
 
     # Create new (full) image
     def new_image
@@ -111,7 +111,7 @@ module Gpx2png
 
     # Render only marker images, and perform some calculations
     def render_markers
-      @poi_images.each do |p|
+      @markers.each do |p|
         # using custom marker
         _blob = p[:blob]
         # or default
@@ -135,10 +135,63 @@ module Gpx2png
 
     # Render nice looking labels
     def render_marker_labels
-      @poi_images.each do |p|
-        @text.text(p[:x_next_to_image], p[:y_after_crop], p[:label].to_s + " ")
+      #http://www.simplesystems.org/RMagick/doc/draw.html#get_type_metrics
+      #http://rmagick.rubyforge.org/web2/web2-3.html
+
+      @markers.each do |p|
+        p[:x_label] = p[:x_after_crop] + 10
+        p[:y_label] = p[:y_after_crop] - 15
+
+        tm = @marker_label.get_type_metrics(@image, p[:label])
+        p[:text_width] = tm.width
+        p[:text_height] = tm.height
+
+        shadow = Magick::Image.new(
+          p[:text_width] + 2*3 + 2*5,
+          p[:text_height] + 2*3 + 2*5,
+          Magick::HatchFill.new('transparent', 'transparent')
+        )
+
+        # text frame
+        gc = Magick::Draw.new
+        gc.stroke "#000000"
+        #gc.stroke_opacity = 0.5
+        gc.fill "#FFFFFF"
+        
+        gc.rectangle 5, 5, p[:text_width] + 6 + 5, p[:text_height] + 6 + 5
+        gc.draw(shadow)
+        #shadow = shadow.blur_image(0, 4)
+
+
+        @image = @image.composite(
+          shadow,
+          p[:x_label],
+          p[:y_label],
+          Magick::OverCompositeOp
+        )
+
+        # text
+        @marker_label.text(p[:x_label] + 8, p[:y_label] + 20, p[:label].to_s + " ")
+
+        #shadow = Magick::Image.new(p[:text_width] + 10, p[:text_height] + 10)
+        #gc = Magick::Draw.new
+        #gc.fill "white"
+        #gc.rectangle p[:x_label] + 5, p[:y_label] + 5, p[:x_label] + p[:text_width] + 5, p[:y_label] +  p[:text_height] + 5
+        ##gc.fill_opacity = 0.5
+        #gc.draw(shadow)
+        #shadow = shadow.blur_image(0, 2)
+        #@marker_label.draw(shadow)
+
+        #puts a.inspect
+        #@marker_label.text(p[:x_next_to_image], p[:y_after_crop], p[:label].to_s + " ")
       end
-      @text.draw(@image)
+
+      
+
+      #@markers.each do |p|
+      #  @marker_label.text(p[:x_next_to_image], p[:y_after_crop], p[:label].to_s + " ")
+      #end
+      @marker_label.draw(@image)
     end
 
     def render

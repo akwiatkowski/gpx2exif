@@ -13,7 +13,7 @@ module Gpx2png
       super
       @renderer ||= DEFAULT_RENDERER
       @r = nil
-      @points = Array.new
+      @markers = Array.new
     end
 
     def save(filename)
@@ -26,8 +26,8 @@ module Gpx2png
       @r.to_png
     end
 
-    def add_point(p)
-      @points << p
+    def add_marker(p)
+      @markers << p
     end
 
     def render
