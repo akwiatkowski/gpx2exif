@@ -10,9 +10,11 @@ describe Gpx2png::Osm do
     e = Gpx2png::Osm.new
     e.coords = g.coords
 
+    e.simulate_download = true
+
     e.fixed_size(300, 300)
     e.add_point(
-      blob: File.read("spec/fixtures/dot.png"),
+      # blob: File.read("spec/fixtures/dot.png"), # added default marker
       label: 'test',
       lat: g.coords.first[:lat],
       lon: g.coords.first[:lon]

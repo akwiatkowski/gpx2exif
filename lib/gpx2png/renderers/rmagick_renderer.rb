@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'RMagick'
+require 'gpx2png/assets/sample_marker'
 
 $:.unshift(File.dirname(__FILE__))
 
@@ -111,7 +112,12 @@ module Gpx2png
     # Render only marker images, and perform some calculations
     def render_markers
       @poi_images.each do |p|
-        img_tile = Magick::Image.from_blob(p[:blob])[0]
+        # using custom marker
+        _blob = p[:blob]
+        # or default
+        _blob = SampleMarker::BLOB if _blob.nil?
+
+        img_tile = Magick::Image.from_blob(_blob)[0]
         p[:x_after_crop] = p[:x] - @crop_l.to_i
         p[:y_after_crop] = p[:y] - @crop_t.to_i
         p[:x_center] = p[:x_after_crop] - img_tile.columns / 2
