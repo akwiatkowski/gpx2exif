@@ -5,6 +5,7 @@ gem 'mini_exiftool'
 gem 'builder'
 gem 'rmagick'
 gem 'chunky_png'
+gem 'geokit'
 
 group :development do
   gem "rspec"
