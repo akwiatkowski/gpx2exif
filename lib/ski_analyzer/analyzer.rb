@@ -46,8 +46,8 @@ module SkiAnalyzer
         d = ga.distance_from(gb, units: :kms)
         td = @coords[i][:time] - @coords[i-1][:time]
 
-        @coords[i][:distance] = d * 1000.0
-        @coords[i][:speed] = @coords[i][:distance] / td
+        @coords[i][:distance] = d
+        @coords[i][:speed] = (@coords[i][:distance] * 1000.0) / td
 
         puts "D - #{@coords[i][:distance]} m | S - #{@coords[i][:speed]} m/s"
       end
@@ -81,21 +81,70 @@ module SkiAnalyzer
       end
 
       # check if ascend/descend
+      j = 0
       t = :up
       (1...@coords.size).each do |i|
         if t == :up
           if @coords[i][:d_finish] < 0.1 and @coords[i-1][:d_finish] < @coords[i][:d_finish]
             t = :down
-            puts "Type change #{i} - #{t}"
+            j += 1
+            puts "Type change #{i} - #{t} - #{j}"
           end
         elsif t == :down
           if @coords[i][:d_start] < 0.1 and @coords[i-1][:d_start] < @coords[i][:d_start]
             t = :up
-            puts "Type change #{i} - #{t}"
+            j += 1
+            puts "Type change #{i} - #{t} - #{j}"
           end
         end
 
         @coords[i][:type] = t
+        @coords[i][:round] = j
+      end
+
+      # some computing
+      # distance quant calculation, from "finish"
+      q = 0.05 # quant
+      gf = Geokit::LatLng.new(@finish[:lat], @finish[:lon])
+      gs = Geokit::LatLng.new(@start[:lat], @start[:lon])
+      round_distance = gf.distance_from(gs, units: :kms)
+      quant_count = round_distance / q
+      quant_count = quant_count.ceil
+      q = round_distance / quant_count
+
+      puts "Distance quant #{q}, count #{quant_count}"
+
+      result = Array.new
+      (0..j).each do |round|
+        # round loop
+        (0..quant_count).each do |qc|
+          # quant loop
+
+          d_from = q * qc
+          d_to = (q + 1) * qc
+          coords = @coords.select { |c| c[:round] == round and c[:d_finish] >= d_from and c[:d_finish] < d_to }
+          puts "Found coords #{coords.size} for round #{round} and quant #{qc}"
+
+          h = Hash.new
+          h[:round] = round
+          begin
+            h[:type] = coords.first[:type]
+          rescue
+          end
+
+          sq = 0
+          h[:speed] = 0.0
+          coords.each do |coord|
+            _s = coord[:speed]
+            if a
+              h[:speed] = 0.0
+            end
+
+          end
+
+          puts h.inspect
+
+        end
       end
 
 
