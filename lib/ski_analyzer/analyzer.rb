@@ -22,6 +22,7 @@ module SkiAnalyzer
 
       calculate_speed
       process
+      descend_results
 
       #g = Geokit::LatLng.new(@coords.first[:lat], @coords.first[:lon])
       #puts g.inspect
@@ -114,7 +115,7 @@ module SkiAnalyzer
 
       puts "Distance quant #{q}, count #{quant_count}"
 
-      result = Array.new
+      results = Array.new
       (0..j).each do |round|
         # round loop
         (0..quant_count).each do |qc|
@@ -127,26 +128,63 @@ module SkiAnalyzer
 
           h = Hash.new
           h[:round] = round
+          h[:quant] = qc
           begin
             h[:type] = coords.first[:type]
           rescue
           end
 
           sq = 0
-          h[:speed] = 0.0
+          ss = 0.0
           coords.each do |coord|
             _s = coord[:speed]
-            if a
-              h[:speed] = 0.0
+            if _s
+              ss += _s
+              sq += 1
             end
-
+          end
+          if sq > 0
+            h[:speed] = ss / sq.to_f
           end
 
-          puts h.inspect
-
+          results << h
         end
       end
 
+      @results = results
+    end
+
+    def descend_results
+      rs = @results.select { |r| r[:type] == :down }
+      #rs = @results.select { |r| r[:type] == :up }
+
+      rounds = rs.collect { |r| r[:round] }.sort.uniq
+      quants = rs.collect { |r| r[:quant] }.sort.uniq
+
+      s = ""
+
+      s += "\t"
+      rounds.each do |r|
+        s += "#{r}\t"
+      end
+      s += "\n"
+
+      quants.each do |q|
+        s += "#{q}\t"
+
+        rounds.each do |r|
+          _a = rs.select { |a| a[:round] == r and a[:quant] == q }
+          if _a.size > 0
+            speed = _a.first[:speed]
+            s += "#{(speed * 3.6).round}\t"
+          else
+            s += ".\t"
+          end
+        end
+        s += "\n"
+      end
+
+      puts s
 
     end
   end
