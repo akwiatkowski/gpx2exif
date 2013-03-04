@@ -81,10 +81,22 @@ module SkiAnalyzer
       end
 
       # check if ascend/descend
+      t = :up
       (1...@coords.size).each do |i|
+        if t == :up
+          if @coords[i][:d_finish] < 0.1 and @coords[i-1][:d_finish] < @coords[i][:d_finish]
+            t = :down
+            puts "Type change #{i} - #{t}"
+          end
+        elsif t == :down
+          if @coords[i][:d_start] < 0.1 and @coords[i-1][:d_start] < @coords[i][:d_start]
+            t = :up
+            puts "Type change #{i} - #{t}"
+          end
+        end
 
+        @coords[i][:type] = t
       end
-
 
 
     end
