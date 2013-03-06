@@ -105,7 +105,8 @@ module SkiAnalyzer
 
       # some computing
       # distance quant calculation, from "finish"
-      q = 0.05 # quant
+      #q = 0.05 # quant
+      q = 0.2 # quant
       gf = Geokit::LatLng.new(@finish[:lat], @finish[:lon])
       gs = Geokit::LatLng.new(@start[:lat], @start[:lon])
       round_distance = gf.distance_from(gs, units: :kms)
@@ -163,14 +164,14 @@ module SkiAnalyzer
 
       s = ""
 
-      s += "\t"
+      s += "\t\t"
       rounds.each do |r|
         s += "#{r}\t"
       end
-      s += "\n"
+      s += "\n\n"
 
       quants.each do |q|
-        s += "#{q}\t"
+        s += "#{q}\t\t"
 
         rounds.each do |r|
           _a = rs.select { |a| a[:round] == r and a[:quant] == q }
