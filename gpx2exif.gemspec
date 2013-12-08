@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gpx2exif"
-  s.version = "0.1.3"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-10-07"
+  s.date = "2013-12-08"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
   s.executables = ["geotag_all_images", "geotag_simulate", "generate_garmin_waypoints", "gpx2png"]
@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "bin/generate_garmin_waypoints",
     "bin/geotag_all_images",
     "bin/geotag_simulate",
     "bin/gpx2png",
@@ -41,44 +40,46 @@ Gem::Specification.new do |s|
     "lib/gpx2png/renderers/rmagick_renderer.rb",
     "lib/gpx2png/ump.rb",
     "lib/gpx_utils.rb",
-    "lib/gpx_utils/track_importer.rb",
-    "lib/gpx_utils/waypoints_exporter.rb",
-    "lib/gpx_utils/waypoints_importer.rb",
-    "lib/mini_exiftool/mini_exiftool.rb"
+    "lib/mini_exiftool/mini_exiftool.rb",
+    "lib/ski_analyzer.rb",
+    "lib/ski_analyzer/analyzer.rb"
   ]
   s.homepage = "http://github.com/akwiatkowski/gpx2exif"
   s.licenses = ["LGPLv3"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.15"
+  s.rubygems_version = "1.8.25"
   s.summary = "Mass geotagger using GPX files"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
       s.add_runtime_dependency(%q<mini_exiftool>, [">= 0"])
-      s.add_runtime_dependency(%q<builder>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
+      s.add_runtime_dependency(%q<rmagick>, [">= 0"])
+      s.add_runtime_dependency(%q<chunky_png>, [">= 0"])
+      s.add_runtime_dependency(%q<gpx_utils>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
     else
-      s.add_dependency(%q<nokogiri>, [">= 0"])
       s.add_dependency(%q<mini_exiftool>, [">= 0"])
-      s.add_dependency(%q<builder>, [">= 0"])
-      s.add_dependency(%q<rspec>, ["~> 2.3.0"])
-      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
+      s.add_dependency(%q<rmagick>, [">= 0"])
+      s.add_dependency(%q<chunky_png>, [">= 0"])
+      s.add_dependency(%q<gpx_utils>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<simplecov>, [">= 0"])
     end
   else
-    s.add_dependency(%q<nokogiri>, [">= 0"])
     s.add_dependency(%q<mini_exiftool>, [">= 0"])
-    s.add_dependency(%q<builder>, [">= 0"])
-    s.add_dependency(%q<rspec>, ["~> 2.3.0"])
-    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
+    s.add_dependency(%q<rmagick>, [">= 0"])
+    s.add_dependency(%q<chunky_png>, [">= 0"])
+    s.add_dependency(%q<gpx_utils>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<simplecov>, [">= 0"])
   end
 end
