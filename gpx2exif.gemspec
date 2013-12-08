@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = "2013-12-08"
   s.description = "Mass geotagger using GPX files."
   s.email = "bobikx@poczta.fm"
-  s.executables = ["geotag_all_images", "geotag_simulate", "gpx2png"]
+  s.executables = ["geotag_all_images", "geotag_simulate", "generate_garmin_waypoints", "gpx2png"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
