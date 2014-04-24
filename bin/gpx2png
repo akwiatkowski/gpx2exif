@@ -40,6 +40,26 @@ if options[:zoom].nil? and options[:size].nil?
   @fail = true
 end
 
+module GpxUtils
+  class TrackImporter
+    def self.make_label point
+      "#{point[:time].strftime('%H:%M:%S')}: (#{point[:lat]}, #{point[:lon]})"
+    end
+    def auto_marker
+      puts "Track starts: #{self.class.make_label self.coords[0]}"
+      puts "Track ends: #{self.class.make_label self.coords[-1]}"
+
+      (0..(self.coords.length/20)).each do |i|
+        index = i * 20
+        point = self.coords[index]
+        label = self.class.make_label point
+        yield({lat: point[:lat], lon: point[:lon], label: label})
+      end
+      
+    end
+  end
+end
+
 unless @fail
   g = GpxUtils::TrackImporter.new
   g.add_file(options[:gpx])
@@ -50,6 +70,9 @@ unless @fail
     e = Gpx2png::Osm.new
   end
   e.coords = g.coords
+  g.auto_marker do |marker|
+    e.add_marker marker
+  end
 
   if options[:size]
     # constant size

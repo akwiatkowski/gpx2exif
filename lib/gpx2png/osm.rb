@@ -32,10 +32,11 @@ module Gpx2png
 
     def render
       setup_renderer
-      initial_calculations
+      initial_calculations(@scale_options)
       download_and_join_tiles
     end
 
+    attr_accessor :scale_options
     attr_accessor :renderer_options
 
     # Get proper renderer class

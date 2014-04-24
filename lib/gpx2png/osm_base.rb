@@ -110,11 +110,36 @@ module Gpx2png
       @fixed_height = _height
     end
 
-    def initial_calculations
-      @lat_min = @coords.collect { |c| c[:lat] }.min
-      @lat_max = @coords.collect { |c| c[:lat] }.max
-      @lon_min = @coords.collect { |c| c[:lon] }.min
-      @lon_max = @coords.collect { |c| c[:lon] }.max
+    def min_coords_or(key,val)
+      val || @coords.collect { |c| c[key] }.min
+    end
+
+    def max_coords_or(key,val)
+      val || @coords.collect { |c| c[key] }.max
+    end
+
+    def initial_calculations(scale={})
+      scale ||= {}
+      puts "Initializing with scale: #{scale.inspect}"
+      @lat_min = min_coords_or(:lat,scale[:lat_min])
+      @lat_max = max_coords_or(:lat,scale[:lat_max])
+      @lon_min = min_coords_or(:lon,scale[:lon_min])
+      @lon_max = max_coords_or(:lon,scale[:lon_max])
+
+      if scale[:scale].to_f > 0.00001
+        puts "Scaling from: (#{lat_min},#{lon_min})-(#{lat_max},#{lon_max})"
+        dlat = @lat_max - @lat_min
+        dlon = @lon_max - @lon_min
+        dlat2 = dlat * scale[:scale].to_f
+        dlon2 = dlon * scale[:scale].to_f
+        shift_x = dlon2 * scale[:shift_x].to_f
+        shift_y = dlat2 * scale[:shift_y].to_f
+        @lat_max += shift_y - (dlat - dlat2)/2.0
+        @lat_min += shift_y + (dlat - dlat2)/2.0
+        @lon_max += shift_x - (dlon - dlon2)/2.0
+        @lon_max += shift_x + (dlon - dlon2)/2.0
+        puts "Scaled to: (#{lat_min},#{lon_min})-(#{lat_max},#{lon_max})"
+      end
 
       # auto zoom must be here
       # drawing must fit into fixed resolution

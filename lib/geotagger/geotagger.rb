@@ -8,9 +8,11 @@ $:.unshift(File.dirname(__FILE__))
 module Geotagger
   class Geotagger
 
+    attr_reader :options, :ti
+
     def initialize(options = {})
       @verbose = options[:verbose]
-      @ee = ExifEditor.new
+      @ee = ExifEditor.new options
       @ti = TrackImporter.new
       @ti.verbose = @verbose
     end
@@ -39,12 +41,18 @@ module Geotagger
       @ee.read_file(path, time_offset)
     end
 
+    def fix_times
+      @ee.fix_times
+    end
+
     def match_up
       @ee.images.each do |i|
-        puts "* searching for #{i[:path]}, time #{i[:time]}" if @verbose
+        puts "* searching for #{i}" if @verbose
         i[:coord] = @ti.find_by_time(i[:time])
         if i[:coord].nil?
           puts " - not found" if @verbose
+        else
+           @ti.add_image_marker(i)
         end
       end
 
@@ -55,7 +63,7 @@ module Geotagger
       @ee.images.each do |i|
         if not i[:coord].nil?
           puts "! saving for #{i[:path]}" if @verbose
-          @ee.set_photo_coords_internal(i)
+          i.save!
         end
 
       end
