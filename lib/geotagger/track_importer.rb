@@ -18,6 +18,18 @@ module Geotagger
       return false
     end
 
+    def determine_directions(index=0)
+      previous_point = nil
+      @coords.each do |coord|
+        point = Geokit::LatLng.new(coord[:lat], coord[:lon])
+        if previous_point
+          coord[:direction] = previous_point.heading_to(point)
+        end
+        previous_point = point
+      end
+      @coords[0][:direction] = @coords[1][:direction]
+    end
+
     def find_by_time(time)
       selected_coords = @coords.select do |c|
         (c[:time].localtime - time.localtime).abs < THRESHOLD

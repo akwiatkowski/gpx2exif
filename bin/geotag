@@ -52,6 +52,14 @@ OptionParser.new do |opts|
       :shift_y => (y || x)
     }
   end
+  opts.on("-x", "--gpx-tags TAGS", "Comma separated list of key=value tags to add to EXIF") do |v|
+    options[:exif_tags] ||= {}
+    v.split(/\,+/).each do |pair|
+      key,value = pair.split(/\s*\=\s*/)
+      options[:exif_tags][key] = value
+    end
+    puts "Setting extra EXIF tags: #{options[:exif_tags].inspect}"
+  end
   opts.on("-o", "--output FILE", "Output map image file") do |v|
     options[:output_file] = v
   end

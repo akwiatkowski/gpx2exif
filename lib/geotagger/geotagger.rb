@@ -46,6 +46,7 @@ module Geotagger
     end
 
     def match_up
+      @ti.determine_directions
       @ee.images.each do |i|
         puts "* searching for #{i}" if @verbose
         i[:coord] = @ti.find_by_time(i[:time])

@@ -43,6 +43,8 @@ module Geotagger
     def save!
       # http://en.wikipedia.org/wiki/Geotagging#JPEG_photos
 
+      photo['ProcessingSoftware'] = 'gpx2exif'
+
       photo['GPSVersionID'] = '2 2 0 0'
       photo['DateTimeOriginal'] = self.time
 
@@ -56,8 +58,18 @@ module Geotagger
       photo['GPSLongitudeRef'] = lon_ref
 
       photo['GPSAltitude'] = @attr[:coord][:alt]
+      photo['Orientation'] = 1	# 1 means normal upright landscape mode
+      photo['GPSImgDirectionRef'] = 'T'	# T=true north (as opposed to M=magnetic)
+      photo['GPSImgDirection'] = @attr[:coord][:direction]	# calculated in TrackImporter
+      photo['GPSMapDatum'] = 'WGS-84'	# We assume all GPS data is WGS-84
 
-      photo.save
+      (editor.options[:exif_tags]||{}).each do |key,value|
+        photo[key] = value
+      end
+
+      unless photo.save
+        puts "Failed to save exif data to '#{path}': #{photo.errors.inspect}"
+      end
 
       photo2 = MiniExiftool.new path
       puts " - coord saved lat #{photo2['GPSLatitude']} lon #{photo2['GPSLongitude']}" if editor.verbose
