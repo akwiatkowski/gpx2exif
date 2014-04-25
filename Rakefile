@@ -50,3 +50,10 @@ task :coverage do
   `rake spec COVERAGE=true`
   #`open coverage/index.html`
 end
+
+desc "Make temp directory for image output"
+task :make_temp do
+  FileUtils.mkdir_p "samples/tmp"
+end
+
+task :spec => :make_temp

@@ -92,7 +92,8 @@ module Geotagger
 
     def initialize(options = {})
       @options = options
-      @images = Array.new
+      @images = []
+      @image_map = {}
       @global_time_offset = 0
       @verbose = options[:verbose]
     end
@@ -113,8 +114,16 @@ module Geotagger
     end
 
     def read_file(path, time_offset = 0)
-      @images << Image.new(self,path,time_offset)
-      puts "Added #{@images[-1]}" if @verbose
+      image = Image.new(self,path,time_offset)
+      @images << image
+      @image_map[path] = image
+      puts "Added #{image}" if @verbose
+      image
+    end
+
+    def get_photo_time(path)
+      image = @image_map[path] || read_file(path)
+      image.photo['DateTimeOriginal']
     end
 
   end

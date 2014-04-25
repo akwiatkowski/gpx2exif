@@ -7,7 +7,6 @@ $:.unshift(File.dirname(__FILE__))
 module Gpx2png
   class RmagickRenderer
     def initialize(_options = { })
-      puts "Initalizing RMagick renderer: #{_options.inspect}"
       @options = _options || { }
       @color = @options[:color] || '#FF0000'
       @width = @options[:width] || 3
