@@ -20,9 +20,9 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Mass geotagger using GPX files}
   gem.description = %Q{Mass geotagger using GPX files.}
   gem.email = "bobikx@poczta.fm"
-  gem.authors = ["Aleksander Kwiatkowski"]
+  gem.authors = ["Aleksander Kwiatkowski", "Craig Taverner"]
   # dependencies defined in Gemfile
-  gem.executables = ['geotag_all_images', 'geotag_simulate', 'gpx2png']
+  gem.executables = ['geotag', 'geotag_all_images', 'geotag_simulate', 'gpx2png']
 
   gem.files = FileList[
     "[A-Z]*", "{bin,generators,lib,test}/**/*"

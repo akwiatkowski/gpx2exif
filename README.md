@@ -112,6 +112,6 @@ Contributing to gpx2xif
 Copyright
 ---------
 
-Copyright (c) 2012 Aleksander Kwiatkowski. See LICENSE.txt for
+Copyright (c) 2012-2014 Aleksander Kwiatkowski, Craig Taverner. See LICENSE.txt for
 further details.
 
