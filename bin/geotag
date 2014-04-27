@@ -1,0 +1,157 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'gpx2exif'
+require 'gpx2png/osm'
+require 'gpx2png/ump'
+require 'optparse'
+require 'geotagger/geotagger'
+
+options = { }
+OptionParser.new do |opts|
+  opts.banner = "Usage: geotag [options] [files]"
+
+  opts.on("-d", "--[no-]debug", "Debug mode") do |v|
+    options[:debug] = v
+  end
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+  opts.on("-m", "--[no-]simulate", "Run geotagging as simulation") do |v|
+    options[:verbose] = v
+  end
+  opts.on("-a", "--[no-]autofind", "Run geotagging using all GPX and JPG files found from current path") do |v|
+    options[:verbose] = v
+  end
+  opts.on("-g", "--gpx FILE", "Input GPX file") do |v|
+    options[:gpx] = v
+  end
+  opts.on("-T", "--start-time DATETIME", "Time of first image for images without timestamps") do |v|
+    options[:start_time] = v
+  end
+  opts.on("-G", "--time-gap MILLIS", "Time gap in milliseconds between images for images without timestamps") do |v|
+    options[:time_gap] = v.to_f
+  end
+  opts.on("-t", "--timeoffset OFFSET", "Timeoffset between GPX and EXIF") do |v|
+    options[:time_offset] = v.to_i
+  end
+  opts.on("-p", "--pattern FILEPAT", "Input image file pattern") do |v|
+    options[:pattern] = v
+  end
+  opts.on("-z", "--zoom ZOOM", "Set zoom") do |v|
+    options[:zoom] = v
+  end
+  opts.on("-s", "--size WIDTHxHEIGHT", "Set output map image size") do |v|
+    options[:size] = v
+  end
+  opts.on("-e", "--scale SCALE:XFACTOR:YFACTOR", "Scale dataset for closeup view") do |v|
+    s,x,y = v.split(/\:/)
+    options[:scale] = {
+      :scale => [[s.to_f,0.00001].max,1000].min,
+      :shift_x => x,
+      :shift_y => (y || x)
+    }
+  end
+  opts.on("-x", "--gpx-tags TAGS", "Comma separated list of key=value tags to add to EXIF") do |v|
+    options[:exif_tags] ||= {}
+    v.split(/\,+/).each do |pair|
+      key,value = pair.split(/\s*\=\s*/)
+      options[:exif_tags][key] = value
+    end
+    puts "Setting extra EXIF tags: #{options[:exif_tags].inspect}"
+  end
+  opts.on("-o", "--output FILE", "Output map image file") do |v|
+    options[:output_file] = v
+  end
+  opts.on("-u", "--ump", "Use UMP tiles rather than OSM for output map background") do
+    options[:ump] = true
+  end
+end.parse!
+
+if options[:debug]
+  puts options.inspect
+  puts ARGV.inspect
+end
+
+unless options[:gpx]
+  puts "Input GPX file needed"
+  @fail = true
+end
+if options[:output_file]
+  options[:size] ||= "600x600"
+  options[:zoom] ||= 1.0
+end
+if options[:output_file].nil? && options[:pattern].nil? && ARGV.length == 0
+  puts "Need at least one file, or a file pattern, or an output image"
+  @fail = true
+end
+
+if @fail
+  exit 0
+end
+
+$track_importer = nil
+
+if ARGV.length > 0 || options[:pattern] || options[:autofind]
+  g = Geotagger::Geotagger.new(options.merge(files: ARGV))
+  $track_importer = g.ti
+  if options[:autofind]
+    g.add_all_files(options[:time_offset].to_i)
+  end
+  if options[:gpx]
+    g.add_gpx_file(options[:gpx])
+  end
+  if options[:pattern]
+    g.add_pattern(options[:pattern])
+  end
+  if ARGV.length > 0
+    ARGV.each{|file| g.add_image(file)}
+  end
+  if options[:start_time]
+    g.fix_times
+  end
+  g.match_up
+  if options[:simulate]
+    g.simulate
+  else
+    g.save!
+  end
+end
+
+if options[:output_file]
+  g = $track_importer
+  unless g
+    g = Geotagger::TrackImporter.new
+    g.add_file(options[:gpx])
+  end
+
+  if options[:ump]
+    e = Gpx2png::Ump.new
+  else
+    e = Gpx2png::Osm.new
+  end
+  e.coords = g.coords
+  g.auto_marker do |marker|
+    e.add_marker marker
+  end
+
+  if options[:scale]
+    e.scale_options = options[:scale]
+  end
+
+  if options[:size]
+    # constant size
+    options[:size] =~ /(\d+)x(\d+)/
+    e.fixed_size($1.to_i, $1.to_i)
+  else
+    # constant zoom
+    e.zoom = options[:zoom].to_i
+    e.renderer_options = {crop_enabled: true}
+  end
+
+  e.save(options[:output_file])
+end
+
+# testing
+# ruby -Ilib bin/geotag -g spec/fixtures/sample.gpx -s 400x400 -o samples/tmp/cli_test.png -u
+

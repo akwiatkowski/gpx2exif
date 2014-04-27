@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+  version="1.0"
+  creator="Geopaparazzi - http://www.geopaparazzi.eu"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.topografix.com/GPX/1/0"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+<time>2014-04-17T11:11:17Z</time>
+<bounds minlat="0.0" minlon="0.0" maxlat="56.0599854" maxlon="12.97804641"/>
+<trk>
+<name>log_1</name>
+
+<trkseg>
+<trkpt lat="56.05338695" lon="12.97361508">
+  <ele>76.30000305175781</ele>
+  <time>2014-04-17T11:03:41Z</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>
