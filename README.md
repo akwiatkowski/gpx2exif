@@ -4,8 +4,31 @@ gpx2exif
 Geotagging
 ----------
 
-Geotag your photos using stored GPX files. At this moment it supports only Garmin eTrex devices.
+Geotag your photos using stored GPX files. There are a few scripts here, the
+original scripts written by akwiatkowski, and a new script called 'geotag'
+by Craig Taverner, based on the older scripts.  Craig has updated the
+libraries and added the new script specifically to support gettagging video
+streams that have no timestamp or location.  Run the 'geotag' script for
+command-line options.  At the simplest, you want something like:
 
+    geotag -g track.gpx -o map.png -s 1500x1500 -v
+
+To make a map of your track, from which you can work out the timestamps of some files and therefor the starting timestamp of the entire video.
+
+Then convert the video to jpg with:
+
+    ffmpeg -i video.mp4 -r 1 images/video_%4d.jpg
+
+And finally geotag the images with:
+
+    geotag -g track.gpx -v images/video_*jpg \
+      -T 2014-04-25T12:05:05+02 \
+      -x "Make=GoPro,Model=Hero3+,Author=Craig Taverner"
+
+Change the settings to suite your phone.
+
+The rest of the original README follows. I think this is mostly out of date,
+even in akwiatkowski's version of the library.
 
 Disclaimer
 ----------
