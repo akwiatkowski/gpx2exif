@@ -64,7 +64,7 @@ module Geotagger
       puts "Track ends: #{self.class.make_label self.coords[-1]}"
 
       coordset = self.coords.map do |coord|
-        image = @images.select {|i| i[:coord] == coord}[0]
+        image = (@images||[]).select {|i| i[:coord] == coord}[0]
         {coord: coord, image: image}
       end
 
