@@ -15,6 +15,7 @@ module Geotagger
       @ee = ExifEditor.new options
       @ti = TrackImporter.new
       @ti.verbose = @verbose
+      @ee.global_time_offset = options[:time_offset].to_i
     end
 
     # Add all GPX and images with
@@ -30,6 +31,32 @@ module Geotagger
       end
       Dir.glob("**/*.JPEG", File::FNM_CASEFOLD).each do |f|
         add_image(f, time_offset)
+      end
+    end
+
+    def add_pattern_files(prefix, num, suffix)
+      Dir.glob("#{prefix}#{'?'*num}#{suffix}", File::FNM_CASEFOLD).each do |f|
+        if f =~ /#{prefix}(\d{#{num}})#{suffix}/
+          add_image(f, $1.to_i)
+        else
+          puts "Invalid image, does not match pattern /#{prefix}(\d{#{num}})#{suffix}/: #{f}"
+        end
+      end
+    end
+
+    def add_pattern(pattern)
+      f = pattern.split(/\%/)
+      if f.length > 1
+        prefix=f[0]
+        if f[1] =~ /^(\d+)d(.*)/
+          num = $1.to_i
+          suffix = $2
+          add_pattern_files(prefix, num, suffix, time_offset)
+        else
+          puts "Unrecognized pattern: Expecting decimals and 'd' after '%' in #{pattern}"
+        end
+      else
+        puts "Unrecognized pattern: Expecting '%#d' in #{pattern}"
       end
     end
 
@@ -49,7 +76,7 @@ module Geotagger
       @ti.determine_directions
       @ee.images.each do |i|
         puts "* searching for #{i}" if @verbose
-        i[:coord] = @ti.find_by_time(i[:time])
+        i[:coord] = @ti.interpolate_by_time(i[:fixed_time])
         if i[:coord].nil?
           puts " - not found" if @verbose
         else

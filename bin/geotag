@@ -26,6 +26,15 @@ OptionParser.new do |opts|
   opts.on("-g", "--gpx FILE", "Input GPX file") do |v|
     options[:gpx] = v
   end
+  opts.on("-C", "--config CONFIGFILE", "Load configs from a file") do |v|
+    File.open(v).each do |line|
+      if line =~ /^([^\s]+)\s+(.*)$/
+        options[$1] = $2.chomp
+      else
+        puts "Unrecognised config line: #{line}"
+      end
+    end
+  end
   opts.on("-T", "--start-time DATETIME", "Time of first image for images without timestamps") do |v|
     options[:start_time] = v
   end
@@ -96,7 +105,7 @@ if ARGV.length > 0 || options[:pattern] || options[:autofind]
   g = Geotagger::Geotagger.new(options.merge(files: ARGV))
   $track_importer = g.ti
   if options[:autofind]
-    g.add_all_files(options[:time_offset].to_i)
+    g.add_all_files
   end
   if options[:gpx]
     g.add_gpx_file(options[:gpx])
@@ -105,7 +114,7 @@ if ARGV.length > 0 || options[:pattern] || options[:autofind]
     g.add_pattern(options[:pattern])
   end
   if ARGV.length > 0
-    ARGV.each{|file| g.add_image(file)}
+    ARGV.each_with_index{|file,index| g.add_image(file,index)}
   end
   if options[:start_time]
     g.fix_times

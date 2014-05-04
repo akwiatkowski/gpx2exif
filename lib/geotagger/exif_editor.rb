@@ -16,8 +16,10 @@ module Geotagger
       @photo = MiniExiftool.new path
       @attr = {
        :path => path,
-       :time => (time = @photo['DateTimeOriginal']) && (time + time_offset + editor.global_time_offset)
+       :time_offset => time_offset,
+       :time => @photo['DateTimeOriginal']
       }
+      @attr[:fixed_time] = @attr[:time] && (@attr[:time] + time_offset + editor.global_time_offset)
     end
 
     def path
@@ -26,6 +28,10 @@ module Geotagger
 
     def time
       self[:time]
+    end
+
+    def fixed_time
+      self[:fixed_time]
     end
 
     def [](key)
@@ -46,7 +52,7 @@ module Geotagger
       photo['ProcessingSoftware'] = 'gpx2exif'
 
       photo['GPSVersionID'] = '2 2 0 0'
-      photo['DateTimeOriginal'] = self.time
+      photo['DateTimeOriginal'] = self.time || self.fixed_time
 
       photo['GPSLatitude'] = @attr[:coord][:lat]
       photo['GPSLongitude'] = @attr[:coord][:lon]
@@ -81,7 +87,7 @@ module Geotagger
     end
 
     def to_s
-      "Image[#{path}] at '#{time}'"
+      "Image[#{path}] at '#{fixed_time}'"
     end
 
   end
@@ -106,8 +112,12 @@ module Geotagger
       puts "Start: #{start_time}"
       @images.each_with_index do |image,index|
         if image[:time].nil?
-          timestamp = start_time + ((options[:time_gap] || 1000).to_i * index) / (1000.0 * 24 * 60 * 60)
+          offset = image[:time_offset].to_i
+          offset = index if(offset == 0)
+          timestamp = start_time + @global_time_offset +
+            ((options[:time_gap] || 1000).to_i * offset) / (1000.0 * 24 * 60 * 60)
           image[:time] = timestamp.to_time
+          image[:fixed_time] = timestamp.to_time
         end
         puts "#{index}: #{image.attr.inspect}"
       end

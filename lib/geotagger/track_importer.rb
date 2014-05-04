@@ -32,6 +32,61 @@ module Geotagger
       end
     end
 
+    def search_back(lt,index)
+      while index >= 0 && @coords[index][:time].localtime > lt
+        index -= 1
+      end
+      index
+    end
+
+    def search_forward(lt,index)
+      while index < @coords.length && @coords[index][:time].localtime < lt
+        index += 1
+      end
+      index
+    end
+
+    def interpolate_between(a,b,time)
+      lt = time.localtime
+      ta = lt - a[:time].localtime
+      tb = b[:time].localtime - lt
+      if ta < 0
+        if tb < 0
+          puts "No correlation for #{lt}"
+        else
+          puts " - Closest match: #{b}"
+          b
+        end
+      else
+        if tb < 0
+          puts " - Closest match: #{a}"
+          a
+        else
+          puts " - interpolating between #{a[:time]} and #{b[:time]}"
+          puts " - weighted averaging: weights a=#{tb}, b=#{ta}"
+          lat = (a[:lat] * tb + b[:lat] * ta) / (ta + tb)
+          lon = (a[:lon] * tb + b[:lon] * ta) / (ta + tb)
+          coord = {:lat => lat, :lon => lon, :time => time}
+          puts " - weighted average: #{coord}"
+          coord
+        end
+      end
+    end
+
+    def interpolate_by_time(time)
+      lt = time.localtime
+      @previous_search_index ||= 0
+      if @coords[@previous_search_index][:time].localtime == lt
+        @coords[@previous_search_index]
+      elsif @coords[@previous_search_index][:time].localtime > lt
+        @previous_search_index = search_back(lt,@previous_search_index)
+        interpolate_between(@coords[@previous_search_index],@coords[@previous_search_index+1],time)
+      else
+        @previous_search_index = search_forward(lt,@previous_search_index)
+        interpolate_between(@coords[@previous_search_index-1],@coords[@previous_search_index],time)
+      end
+    end
+
     def find_by_time(time)
       selected_coords = @coords.select do |c|
         (c[:time].localtime - time.localtime).abs < THRESHOLD
@@ -45,6 +100,7 @@ module Geotagger
           puts " - best is #{selected_coords.first[:time].localtime}, time offset #{selected_coords.first[:time].localtime - time.localtime}"
           puts " - lat #{selected_coords.first[:lat]} lon #{selected_coords.first[:lon]}"
         end
+        puts " - interpolation: #{interpolate_by_time(time)}"
       end
 
       return selected_coords.first
