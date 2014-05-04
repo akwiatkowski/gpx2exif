@@ -66,7 +66,8 @@ module Geotagger
           puts " - weighted averaging: weights a=#{tb}, b=#{ta}"
           lat = (a[:lat] * tb + b[:lat] * ta) / (ta + tb)
           lon = (a[:lon] * tb + b[:lon] * ta) / (ta + tb)
-          coord = {:lat => lat, :lon => lon, :time => time}
+          direction = (a[:direction] * tb + b[:direction] * ta) / (ta + tb)
+          coord = {:lat => lat, :lon => lon, :time => time, :direction => direction}
           puts " - weighted average: #{coord}"
           coord
         end

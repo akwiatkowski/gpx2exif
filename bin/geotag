@@ -114,7 +114,7 @@ if ARGV.length > 0 || options[:pattern] || options[:autofind]
     g.add_pattern(options[:pattern])
   end
   if ARGV.length > 0
-    ARGV.each_with_index{|file,index| g.add_image(file,index)}
+    ARGV.each_with_index{|file| g.add_image(file)}
   end
   if options[:start_time]
     g.fix_times
