@@ -18,6 +18,19 @@ module Geotagger
       return false
     end
 
+    # Would be better to add this to GpxUtils::TrackImporter so it filters on import
+    def filter_by(time_range)
+      if time_range.length > 1
+        @coords = @coords.select do |coord|
+          coord[:time] &&
+          coord[:time] >= time_range[0] &&
+          coord[:time] <= time_range[1]
+        end
+      else
+        puts "Cannot filter on invalid time range: #{time_range}"
+      end
+    end
+
     def determine_directions(index=0)
       if @coords.length > 1
         previous_point = nil
@@ -116,7 +129,8 @@ module Geotagger
       @images << image
     end
 
-    def auto_marker
+    def auto_marker(distance_threshold = 0.02)
+      distance_threshold = 0.02 unless(distance_threshold.to_f > 0.001)
       puts "Track starts: #{self.class.make_label self.coords[0]}"
       puts "Track ends: #{self.class.make_label self.coords[-1]}"
 
@@ -131,7 +145,7 @@ module Geotagger
         image = co[:image]
         puts "Labeling coord:#{coord} with image: #{image}" if image
         point = Geokit::LatLng.new(coord[:lat], coord[:lon])
-        if prev_point.nil? || (distance = point.distance_from(prev_point, units: :kms) > 0.02)
+        if prev_point.nil? || (distance = point.distance_from(prev_point, units: :kms) > distance_threshold)
           label = self.class.make_label coord, image
           prev_point = point
           yield({lat: coord[:lat], lon: coord[:lon], label: label})

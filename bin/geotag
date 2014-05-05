@@ -38,7 +38,18 @@ OptionParser.new do |opts|
   opts.on("-T", "--start-time DATETIME", "Time of first image for images without timestamps") do |v|
     options[:start_time] = v
   end
-  opts.on("-G", "--time-gap MILLIS", "Time gap in milliseconds between images for images without timestamps") do |v|
+  opts.on("-R", "--time-range TIMERANGE", "Time range to filter GPX track by") do |v|
+    begin
+      options[:time_range] = v.split(/[\,\-]+/).map do |time|
+        Time.parse(time)
+      end[0..1]
+      options[:time_range][1] ||= options[:time_range][0] + 1
+      puts "Using time range: #{options[:time_range][0]}-#{options[:time_range][1]}"
+    rescue
+      puts "Failed to parse time range '#{v}': #{$!}"
+    end
+  end
+  opts.on("-G", "--time-gap MILLIS", "Time gap in milliseconds between images without timestamps") do |v|
     options[:time_gap] = v.to_f
   end
   opts.on("-t", "--timeoffset OFFSET", "Timeoffset between GPX and EXIF") do |v|
@@ -52,6 +63,9 @@ OptionParser.new do |opts|
   end
   opts.on("-s", "--size WIDTHxHEIGHT", "Set output map image size") do |v|
     options[:size] = v
+  end
+  opts.on("-D", "--marker-distance KM", "Set marker distance gap") do |v|
+    options[:marker_distance] = v.to_f
   end
   opts.on("-e", "--scale SCALE:XFACTOR:YFACTOR", "Scale dataset for closeup view") do |v|
     s,x,y = v.split(/\:/)
@@ -132,6 +146,7 @@ if options[:output_file]
   unless g
     g = Geotagger::TrackImporter.new
     g.add_file(options[:gpx])
+    g.filter_by(options[:time_range]) if options[:time_range]
   end
 
   if options[:ump]
@@ -140,7 +155,7 @@ if options[:output_file]
     e = Gpx2png::Osm.new
   end
   e.coords = g.coords
-  g.auto_marker do |marker|
+  g.auto_marker(options[:marker_distance]) do |marker|
     e.add_marker marker
   end
 
