@@ -11,6 +11,7 @@ module Geotagger
     THRESHOLD = 5*60
 
     attr_accessor :verbose
+    attr_accessor :debug
 
     # Only import valid coords
     def self.coord_valid?(lat, lon, elevation, time)
@@ -46,42 +47,62 @@ module Geotagger
     end
 
     def search_back(lt,index)
-      while index >= 0 && @coords[index][:time].localtime > lt
+      puts "\tSearching backwards from index #{index}" if @debug
+      while index > 0 && @coords[index][:time].localtime > lt
         index -= 1
       end
+      puts "\tNew search index[#{index}]: #{@coords[index][:time].localtime}" if @debug
       index
     end
 
     def search_forward(lt,index)
-      while index < @coords.length && @coords[index][:time].localtime < lt
+      puts "\tSearching forwards from index #{index}" if @debug
+      while index < (@coords.length-1) && @coords[index][:time].localtime < lt
         index += 1
       end
-      index
+      search_back(lt,index)
     end
 
     def interpolate_between(a,b,time)
       lt = time.localtime
       ta = lt - a[:time].localtime
       tb = b[:time].localtime - lt
+      if @debug
+        puts "\tComparing times: #{time}"
+        puts "\t\tPrev: #{a}"
+        puts "\t\tNext: #{b}"
+        puts "\t\t#{ta} after previous"
+        puts "\t\t#{tb} before next"
+      end
       if ta < 0
         if tb < 0
-          puts "No correlation for #{lt}"
+          puts "\tNo correlation for #{lt}" if @verbose
+        elsif -ta < tb
+          puts "\tClosest match: #{a}" if @verbose
+          a
         else
-          puts " - Closest match: #{b}"
+          puts "\tClosest match: #{b}" if @verbose
           b
         end
       else
         if tb < 0
-          puts " - Closest match: #{a}"
-          a
+          if -tb < ta
+            puts "\tClosest match: #{b}" if @verbose
+            b
+          else
+            puts "\tClosest match: #{a}" if @verbose
+            a
+          end
         else
-          puts " - interpolating between #{a[:time]} and #{b[:time]}"
-          puts " - weighted averaging: weights a=#{tb}, b=#{ta}"
+          if @debug
+            puts "\tinterpolating between #{a[:time]} and #{b[:time]}"
+            puts "\tweighted averaging: weights a=#{tb}, b=#{ta}"
+          end
           lat = (a[:lat] * tb + b[:lat] * ta) / (ta + tb)
           lon = (a[:lon] * tb + b[:lon] * ta) / (ta + tb)
           direction = (a[:direction] * tb + b[:direction] * ta) / (ta + tb)
           coord = {:lat => lat, :lon => lon, :time => time, :direction => direction}
-          puts " - weighted average: #{coord}"
+          puts "\tweighted average: #{coord}" if @verbose
           coord
         end
       end
@@ -90,14 +111,16 @@ module Geotagger
     def interpolate_by_time(time)
       lt = time.localtime
       @previous_search_index ||= 0
-      if @coords[@previous_search_index][:time].localtime == lt
+      plt = @coords[@previous_search_index][:time].localtime
+      puts "\tStarting correlation search for '#{lt}' from previous time: #{plt}" if @verbose
+      if plt == lt
         @coords[@previous_search_index]
-      elsif @coords[@previous_search_index][:time].localtime > lt
+      elsif plt > lt
         @previous_search_index = search_back(lt,@previous_search_index)
         interpolate_between(@coords[@previous_search_index],@coords[@previous_search_index+1],time)
       else
         @previous_search_index = search_forward(lt,@previous_search_index)
-        interpolate_between(@coords[@previous_search_index-1],@coords[@previous_search_index],time)
+        interpolate_between(@coords[@previous_search_index],@coords[@previous_search_index+1],time)
       end
     end
 

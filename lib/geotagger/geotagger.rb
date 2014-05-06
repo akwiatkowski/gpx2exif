@@ -15,6 +15,7 @@ module Geotagger
       @ee = ExifEditor.new options
       @ti = TrackImporter.new
       @ti.verbose = @verbose
+      @ti.debug = options[:debug]
       @ee.global_time_offset = options[:time_offset].to_i
     end
 
@@ -75,11 +76,12 @@ module Geotagger
     def match_up
       @ti.determine_directions
       @ee.images.each do |i|
-        puts "* searching for #{i}" if @verbose
+        puts "Searching for #{i}" if @verbose
         i[:coord] = @ti.interpolate_by_time(i[:fixed_time])
         if i[:coord].nil?
-          puts " - not found" if @verbose
+          puts "\tNot found" if @verbose
         else
+           puts "\tGeolocated: #{i[:coord]}" if @verbose
            @ti.add_image_marker(i)
         end
       end
