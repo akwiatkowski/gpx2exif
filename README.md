@@ -7,13 +7,22 @@ Geotagging
 Geotag your photos using stored GPX files. There are a few scripts here, the
 original scripts written by akwiatkowski, and a new script called 'geotag'
 by Craig Taverner, based on the older scripts.  Craig has updated the
-libraries and added the new script specifically to support gettagging video
-streams that have no timestamp or location.  Run the 'geotag' script for
-command-line options.  At the simplest, you want something like:
+libraries and added the new script to support geotagging both images with
+timestamps, and images without.  For example, you can extract images from a
+video stream, and assign timestamps based on image order or filename.  Run
+the 'geotag' script for command-line options. Options like '-t #' are used for
+adjusting existing timestamps, while options like '-T START -G GAP' are used to
+assign completely new timestamps.
+
+Geotagging video
+----------------
+
+At the simplest, you want something like:
 
     geotag -g track.gpx -o map.png -s 1500x1500 -v
 
-To make a map of your track, from which you can work out the timestamps of some files and therefor the starting timestamp of the entire video.
+To make a map of your track, from which you can work out the timestamps of
+some files and therefor the starting timestamp of the entire video.
 
 Then convert the video to jpg with:
 
@@ -26,6 +35,31 @@ And finally geotag the images with:
       -x "Make=GoPro,Model=Hero3+,Author=Craig Taverner"
 
 Change the settings to suite your phone.
+
+The rest of the original README follows. I think this is mostly out of date,
+even in akwiatkowski's version of the library.
+
+Geotagging photos
+-----------------
+
+Start by creating an image of the track:
+
+    geotag -g track.gpx -o map.png -s 1500x1500 -v
+
+From this work out the timestamps of some files, and therefor the offset
+between the camera and the GPS equipment.
+
+And geotag the images with:
+
+    geotag -g track.gpx -v camera/photo_*jpg \
+      -R 20140425T12:00:00+02-20140425T13:00:00+02 -t 15
+
+Notice that you do not need the '-x EXIF' option, because the camera photos
+will already have exif data.  The script will simply add the location,
+orientation and direction tags to the existing EXIF.
+
+README
+------
 
 The rest of the original README follows. I think this is mostly out of date,
 even in akwiatkowski's version of the library.
