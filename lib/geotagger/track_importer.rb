@@ -100,12 +100,26 @@ module Geotagger
           end
           lat = (a[:lat] * tb + b[:lat] * ta) / (ta + tb)
           lon = (a[:lon] * tb + b[:lon] * ta) / (ta + tb)
-          direction = (a[:direction] * tb + b[:direction] * ta) / (ta + tb)
+          dir_a, dir_b = TrackImporter::normalize_directions(a[:direction],b[:direction])
+          direction = (dir_a * tb + dir_b * ta) / (ta + tb)
+          direction += 360.0 while(direction < 0)
+          direction -= 360.0 while(direction > 360)
           coord = {:lat => lat, :lon => lon, :time => time, :direction => direction}
           puts "\tweighted average: #{coord}" if @verbose
           coord
         end
       end
+    end
+
+    def self.normalize_directions(a,b)
+      if (a-b).abs > 180
+        if a > b
+          a -= 360.0
+        else
+          b -= 360.0
+        end
+      end
+      [a,b]
     end
 
     def interpolate_by_time(time)
@@ -115,12 +129,17 @@ module Geotagger
       puts "\tStarting correlation search for '#{lt}' from previous time: #{plt}" if @verbose
       if plt == lt
         @coords[@previous_search_index]
-      elsif plt > lt
-        @previous_search_index = search_back(lt,@previous_search_index)
-        interpolate_between(@coords[@previous_search_index],@coords[@previous_search_index+1],time)
       else
-        @previous_search_index = search_forward(lt,@previous_search_index)
-        interpolate_between(@coords[@previous_search_index],@coords[@previous_search_index+1],time)
+        if plt > lt
+          @previous_search_index = search_back(lt,@previous_search_index)
+        else
+          @previous_search_index = search_forward(lt,@previous_search_index)
+        end
+        if @coords[@previous_search_index+1]
+          interpolate_between(@coords[@previous_search_index],@coords[@previous_search_index+1],time)
+        else
+          @coords[@previous_search_index]
+        end
       end
     end
 
