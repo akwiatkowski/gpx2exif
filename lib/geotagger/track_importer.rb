@@ -39,7 +39,7 @@ module Geotagger
         @coords.each do |coord|
           point = Geokit::LatLng.new(coord[:lat], coord[:lon])
           if previous_point
-            coord[:direction] = previous_point.heading_to(point) + @direction_offset.to_f
+            coord[:direction] = TrackImporter::normalize_direction(previous_point.heading_to(point) + @direction_offset.to_f)
           end
           previous_point = point
         end
@@ -103,13 +103,18 @@ module Geotagger
           lon = (a[:lon] * tb + b[:lon] * ta) / (ta + tb)
           dir_a, dir_b = TrackImporter::normalize_directions(a[:direction],b[:direction])
           direction = (dir_a * tb + dir_b * ta) / (ta + tb)
-          direction += 360.0 while(direction < 0)
-          direction -= 360.0 while(direction > 360)
+          direction = TrackImporter::normalize_direction(direction)
           coord = {:lat => lat, :lon => lon, :time => time, :direction => direction}
           puts "\tweighted average: #{coord}" if @verbose
           coord
         end
       end
+    end
+
+    def self.normalize_direction(direction)
+      direction += 360.0 while(direction < 0)
+      direction -= 360.0 while(direction > 360)
+      direction
     end
 
     def self.normalize_directions(a,b)
