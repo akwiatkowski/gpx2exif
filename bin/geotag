@@ -17,6 +17,9 @@ OptionParser.new do |opts|
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
   end
+  opts.on("-O", "--[no-]simulate-download", "Do not download backing tiles for image rendering") do |v|
+    options[:simulate_download] = v
+  end
   opts.on("-m", "--[no-]simulate", "Run geotagging as simulation") do |v|
     options[:verbose] = v
   end
@@ -156,6 +159,8 @@ if options[:output_file]
     e = Gpx2png::Ump.new
   else
     e = Gpx2png::Osm.new
+    e.simulate_download = options[:simulate_download]
+    puts "SIMULATING DOWNLOAD: #{e.simulate_download}\n\n"
   end
   e.coords = g.coords
   g.auto_marker(options[:marker_distance]) do |marker|
