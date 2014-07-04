@@ -12,6 +12,7 @@ module Geotagger
 
     attr_accessor :verbose
     attr_accessor :debug
+    attr_accessor :direction_offset
 
     # Only import valid coords
     def self.coord_valid?(lat, lon, elevation, time)
@@ -38,7 +39,7 @@ module Geotagger
         @coords.each do |coord|
           point = Geokit::LatLng.new(coord[:lat], coord[:lon])
           if previous_point
-            coord[:direction] = previous_point.heading_to(point)
+            coord[:direction] = previous_point.heading_to(point) + @direction_offset.to_f
           end
           previous_point = point
         end

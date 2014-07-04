@@ -55,6 +55,9 @@ OptionParser.new do |opts|
   opts.on("-t", "--timeoffset OFFSET", "Timeoffset between GPX and EXIF") do |v|
     options[:time_offset] = v.to_i
   end
+  opts.on("-r", "--direction-offset DEGREES", "Direction offset in degrees from the direction of the path") do |v|
+    options[:direction_offset] = v.to_f
+  end
   opts.on("-p", "--pattern FILEPAT", "Input image file pattern") do |v|
     options[:pattern] = v
   end

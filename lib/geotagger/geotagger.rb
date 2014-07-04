@@ -16,6 +16,7 @@ module Geotagger
       @ti = TrackImporter.new
       @ti.verbose = @verbose
       @ti.debug = options[:debug]
+      @ti.direction_offset = options[:direction_offset]
       @ee.global_time_offset = options[:time_offset].to_i
     end
 
