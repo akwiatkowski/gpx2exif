@@ -160,7 +160,6 @@ if options[:output_file]
   else
     e = Gpx2png::Osm.new
     e.simulate_download = options[:simulate_download]
-    puts "SIMULATING DOWNLOAD: #{e.simulate_download}\n\n"
   end
   e.coords = g.coords
   g.auto_marker(options[:marker_distance]) do |marker|
