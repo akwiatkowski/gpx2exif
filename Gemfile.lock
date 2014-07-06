@@ -73,7 +73,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   chunky_png
-  geokit
+  geokit (= 1.8.4)
   gpx_utils
   jeweler
   mini_exiftool
