@@ -36,7 +36,6 @@ GEM
       nokogiri (>= 1.5.10)
       rake
       rdoc
-    json (1.8.1)
     jwt (0.1.11)
       multi_json (>= 1.5)
     mini_exiftool (2.4.1)
@@ -55,8 +54,7 @@ GEM
     public_suffix (4.0.6)
     rack (1.5.2)
     rake (10.3.1)
-    rdoc (4.1.1)
-      json (~> 1.4)
+    rdoc (6.3.2)
     rmagick (2.13.2)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
